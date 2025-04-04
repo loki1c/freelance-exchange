@@ -1,0 +1,54 @@
+.auth-required-page {
+  background: linear-gradient(135deg, #1e1e3f 0%, #0a0a23 100%);
+  color: white;
+  min-height: 100vh;
+  padding-top: 80px;
+}
+
+.container {
+  max-width: 800px;
+}
+
+.auth-card {
+  background: #1e1e3f;
+  border-radius: 15px;
+  padding: 40px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.display-4 {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #00ddeb;
+}
+
+.lead {
+  font-size: 1.2rem;
+  opacity: 0.8;
+}
+
+.custom-btn {
+  border-radius: 25px;
+  padding: 10px 25px;
+  font-size: 1.1rem;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.btn-primary.custom-btn {
+  background-color: #00ddeb;
+  border: none;
+}
+
+.btn-primary.custom-btn:hover {
+  background-color: #00b7c3;
+}
+
+.btn-outline-primary.custom-btn {
+  border-color: #00ddeb;
+  color: #00ddeb;
+}
+
+.btn-outline-primary.custom-btn:hover {
+  background-color: #00ddeb;
+  color: #0a0a23;
+}

@@ -1,0 +1,61 @@
+.create-order-page {
+  background: linear-gradient(135deg, #0a0a23 0%, #1e1e3f 100%);
+  min-height: 100vh;
+  color: white;
+}
+
+.container {
+  max-width: 800px;
+}
+
+.section-title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 40px;
+  color: #00ddeb;
+}
+
+.create-order-card {
+  background: #1e1e3f;
+  border-radius: 15px;
+  padding: 30px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.form-label {
+  font-size: 0.9rem;
+  color: #fff;
+}
+
+.form-control {
+  background: #2a2a5a;
+  border: none;
+  color: white;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.form-control::placeholder {
+  color: #aaa;
+}
+
+.alert-success {
+  background: #28a745;
+  border: none;
+  color: white;
+  border-radius: 10px;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #00ddeb 0%, #007bff 100%);
+  border: none;
+  padding: 12px 20px;
+  font-size: 1.1rem;
+  border-radius: 25px;
+  transition: background 0.3s;
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, #00b7c3 0%, #0056b3 100%);
+}

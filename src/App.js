@@ -1,0 +1,33 @@
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Navbar from "./components/pages/Navbar/Navbar";
+import Home from "./components/pages/Home/Home";
+import FindOrder from "./components/pages/FindOrder/FindOrder";
+import CreateOrder from "./components/pages/CreateOrder/CreateOrder";
+import Profile from "./components/pages/Profile/Profile";
+import Login from "./components/pages/Login/Login";
+import Registration from "./components/pages/Registration/Registration";
+import AuthRequired from "./components/pages/AuthRequired/AuthRequired";
+import { AuthProvider } from "./context/AuthContext";
+import "./App.css";
+
+function App() {
+  return (
+    <AuthProvider>
+      <Router>
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/find-order" element={<FindOrder />} />
+          <Route path="/create-order" element={<CreateOrder />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/registration" element={<Registration />} />
+          <Route path="/auth-required" element={<AuthRequired />} />
+        </Routes>
+      </Router>
+    </AuthProvider>
+  );
+}
+
+export default App;

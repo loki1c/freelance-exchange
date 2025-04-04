@@ -1,0 +1,19 @@
+body {
+  padding-top: 70px;
+  background-color: #0a0a23;
+  color: white;
+  font-family: 'Arial', sans-serif;
+}
+
+.navbar.fixed-top {
+  z-index: 1000;
+}
+
+a {
+  color: #00ddeb;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #00b7c3;
+}
