@@ -1,44 +1,36 @@
-import React, { useState, useContext } from "react";
-import { useNavigate, Link } from "react-router-dom";
-import { AuthContext } from "../../../context/AuthContext";
-import "bootstrap/dist/css/bootstrap.min.css";
-import "./Login.css";
+import React, { useState } from "react";
+import axios from "axios";
+import { Link } from "react-router-dom";
+import "./Login.css"; // Новый стиль
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const { login } = useContext(AuthContext);
-  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
+    setError(""); // Очистка ошибок перед запросом
 
     try {
-      console.log("Отправляем запрос на вход:", { email, password });
-      const response = await fetch("http://your-backend-api/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
-      });
+      // Отправляем запрос на сервер
+      const response = await axios.post("/api/login", {
+        email,
+        password,
+      }, { withCredentials: true });
 
-      console.log("Ответ от сервера:", response);
-      const data = await response.json();
-      console.log("Данные от сервера:", data);
+      console.log("Успешный вход:", response.data);
 
-      if (response.ok) {
-        login(data.user);
-        localStorage.setItem("token", data.token);
-        navigate("/profile");
-      } else {
-        setError(data.message || "Ошибка входа");
-      }
+      // Сохранение токена в localStorage
+      localStorage.setItem("token", response.data.token);
+
+      // Перенаправление пользователя на главную страницу
+      window.location.href = "/profile";
+      
     } catch (err) {
-      setError("Не удалось подключиться к серверу. Проверьте соединение.");
-      console.error("Ошибка при входе:", err);
+      // Обработка ошибки
+      console.error("Ошибка входа:", err.response?.data?.message || err.message);
+      setError(err.response?.data?.message || "Ошибка входа");
     }
   };
 

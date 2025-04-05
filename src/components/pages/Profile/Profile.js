@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./Profile.css";
 
@@ -8,6 +9,7 @@ const Profile = () => {
   const [orders, setOrders] = useState([]);
   const [newOrder, setNewOrder] = useState({ title: "", description: "", price: "" });
   const [editingOrder, setEditingOrder] = useState(null);
+  const [message, setMessage] = useState("");
 
   useEffect(() => {
     fetchOrders();
@@ -15,51 +17,34 @@ const Profile = () => {
 
   const fetchOrders = async () => {
     try {
-      const response = await fetch("http://your-backend-api/orders", {
+      const response = await axios.get("/api/user/profile/orders", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
-      const data = await response.json();
-      setOrders(data);
+      setOrders(response.data);
     } catch (error) {
       console.error("Ошибка при загрузке заказов:", error);
-      // Заглушка, если API недоступен
-      setOrders([
-        {
-          id: 1,
-          title: "Разработка сайта",
-          description: "Создание сайта для бизнеса.",
-          price: "120 000 тг",
-          image: "URL_ДЛЯ_КАРТИНКИ_ЗАКАЗА_1", // Замени на реальный URL
-        },
-        {
-          id: 2,
-          title: "Копирайтинг",
-          description: "Написание текстов для рекламы.",
-          price: "60 000 тг",
-          image: "URL_ДЛЯ_КАРТИНКИ_ЗАКАЗА_2", // Замени на реальный URL
-        },
-      ]);
+      setMessage("Не удалось загрузить заказы.");
     }
   };
 
   const handleCreateOrder = async (e) => {
     e.preventDefault();
+    setMessage(""); // Очистка предыдущих сообщений
     try {
-      const response = await fetch("http://your-backend-api/orders", {
-        method: "POST",
+      const response = await axios.post("/api/user/profile/orders", newOrder, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-        body: JSON.stringify(newOrder),
       });
-      const data = await response.json();
-      setOrders([...orders, data]);
+      setOrders([...orders, response.data]);
       setNewOrder({ title: "", description: "", price: "" });
+      setMessage("Заказ успешно создан.");
     } catch (error) {
       console.error("Ошибка при создании заказа:", error);
+      setMessage("Ошибка при создании заказа.");
     }
   };
 
@@ -70,35 +55,41 @@ const Profile = () => {
 
   const handleUpdateOrder = async (e) => {
     e.preventDefault();
+    setMessage(""); // Очистка предыдущих сообщений
     try {
-      const response = await fetch(`http://your-backend-api/orders/${editingOrder.id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-        body: JSON.stringify(newOrder),
-      });
-      const updatedOrder = await response.json();
-      setOrders(orders.map((order) => (order.id === updatedOrder.id ? updatedOrder : order)));
+      const response = await axios.put(
+        `/api/user/profile/orders/${editingOrder.id}`,
+        newOrder,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      setOrders(orders.map((order) => (order.id === response.data.id ? response.data : order)));
       setEditingOrder(null);
       setNewOrder({ title: "", description: "", price: "" });
+      setMessage("Заказ успешно обновлен.");
     } catch (error) {
       console.error("Ошибка при обновлении заказа:", error);
+      setMessage("Ошибка при обновлении заказа.");
     }
   };
 
   const handleDeleteOrder = async (id) => {
+    setMessage(""); // Очистка предыдущих сообщений
     try {
-      await fetch(`http://your-backend-api/orders/${id}`, {
-        method: "DELETE",
+      await axios.delete(`/api/user/profile/orders/${id}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
       setOrders(orders.filter((order) => order.id !== id));
+      setMessage("Заказ успешно удален.");
     } catch (error) {
       console.error("Ошибка при удалении заказа:", error);
+      setMessage("Ошибка при удалении заказа.");
     }
   };
 
@@ -106,6 +97,7 @@ const Profile = () => {
     <div className="profile-page">
       <div className="container py-5">
         <h2 className="section-title">Мой профиль</h2>
+
         <div className="card mb-4 profile-form-card">
           <div className="card-body">
             <h5 className="form-title">{editingOrder ? "Редактировать заказ" : "Создать новый заказ"}</h5>
@@ -159,6 +151,7 @@ const Profile = () => {
         </div>
 
         <h3 className="section-title">Мои заказы</h3>
+        {message && <p className="alert alert-info">{message}</p>}
         {orders.length === 0 ? (
           <p className="no-orders">У вас пока нет заказов.</p>
         ) : (

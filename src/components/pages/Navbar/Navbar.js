@@ -26,7 +26,7 @@ const Navbar = () => {
         <div className="collapse navbar-collapse">
           <ul className="navbar-nav ms-auto align-items-center">
             <li className="nav-item">
-              <Link className="nav-link custom-nav-link" to="/find-order">
+              <Link className="nav-link custom-nav-link" to="/AllOrder">
                 Найти заказ
               </Link>
             </li>

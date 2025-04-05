@@ -1,38 +1,42 @@
 import React, { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import axios from "axios";
+import { useNavigate, Link } from "react-router-dom"; // Импортируем useNavigate и Link
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./Registration.css";
 
 const Registration = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [name, setName] = useState("");
-  const [error, setError] = useState("");
-  const navigate = useNavigate();
+  const [formData, setFormData] = useState({ name: "", email: "", password: "" });
+  const [error, setError] = useState(""); // Для отображения ошибки
+  const navigate = useNavigate(); // Для навигации
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
+    setError(""); // Очистка ошибок перед запросом
 
     try {
-      const response = await fetch("http://your-backend-api/register", {
-        method: "POST",
+      const response = await axios.post("/api/registration", formData, {
         headers: {
           "Content-Type": "application/json",
+          "Accept": "application/json",
         },
-        body: JSON.stringify({ name, email, password }),
+        withCredentials: true, // Чтобы куки сохранялись
       });
 
-      const data = await response.json();
+      console.log("Ответ сервера:", response.data);
 
-      if (response.ok) {
-        navigate("/login");
-      } else {
-        setError(data.message || "Ошибка регистрации");
-      }
+      // Сохранение токена в localStorage
+      localStorage.setItem("token", response.data.token);
+
+      // Перенаправление пользователя на страницу входа
+      navigate("/login");
+
     } catch (err) {
-      setError("Не удалось подключиться к серверу. Проверьте соединение.");
-      console.error("Ошибка при регистрации:", err);
+      console.error("Ошибка регистрации:", err.response?.data?.message || err.message);
+      setError(err.response?.data?.message || "Ошибка регистрации");
     }
   };
 
@@ -47,10 +51,11 @@ const Registration = () => {
               <label className="form-label">Имя</label>
               <input
                 type="text"
+                name="name"
                 className="form-control"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
                 placeholder="Введите ваше имя"
+                value={formData.name}
+                onChange={handleChange}
                 required
               />
             </div>
@@ -58,10 +63,11 @@ const Registration = () => {
               <label className="form-label">Email</label>
               <input
                 type="email"
+                name="email"
                 className="form-control"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
                 placeholder="Введите email"
+                value={formData.email}
+                onChange={handleChange}
                 required
               />
             </div>
@@ -69,10 +75,11 @@ const Registration = () => {
               <label className="form-label">Пароль</label>
               <input
                 type="password"
+                name="password"
                 className="form-control"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
                 placeholder="Введите пароль"
+                value={formData.password}
+                onChange={handleChange}
                 required
               />
             </div>
