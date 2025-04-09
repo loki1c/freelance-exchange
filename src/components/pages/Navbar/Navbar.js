@@ -5,7 +5,7 @@ import ChatWindow from "./ChatWindow";
 import "./Navbar.css";
 
 const Navbar = () => {
-  const { isAuthenticated, logout } = useContext(AuthContext);
+  const { isAuthenticated, user, logout } = useContext(AuthContext); // Получаем user из контекста
   const [isChatOpen, setIsChatOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -42,7 +42,7 @@ const Navbar = () => {
               <>
                 <li className="nav-item">
                   <Link className="nav-link custom-nav-link" to="/profile">
-                    Мои заказы
+                    {user?.name || "Мой профиль"} {/* Отображаем имя пользователя */}
                   </Link>
                 </li>
                 <li className="nav-item">
@@ -56,7 +56,10 @@ const Navbar = () => {
                 <li className="nav-item">
                   <button
                     className="nav-link custom-nav-button logout"
-                    onClick={logout}
+                    onClick={() => {
+                      logout(); // Вызываем logout из контекста
+                      navigate("/"); // Перенаправляем на главную страницу после выхода
+                    }}
                   >
                     Выйти
                   </button>
@@ -77,4 +80,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default Navbar;
