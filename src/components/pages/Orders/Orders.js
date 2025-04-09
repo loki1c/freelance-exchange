@@ -1,16 +1,28 @@
 import React, { useState } from "react";
+import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
-import "./CreateOrder.css";
+import "./Orders.css";
 
-const CreateOrder = () => {
+const Orders = () => {
   const [order, setOrder] = useState({ title: "", description: "", price: "" });
-  const [success, setSuccess] = useState("");
+  const [message, setMessage] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleCreateOrder = async (e) => {
     e.preventDefault();
-    console.log("Создан заказ:", order);
-    setSuccess("Заказ успешно создан!");
-    setOrder({ title: "", description: "", price: "" });
+    setMessage("");
+    try {
+      const response = await axios.post("/api/user/profile/orders", order, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      setOrder({ title: "", description: "", price: "" });
+      setMessage("Заказ успешно создан!");
+    } catch (error) {
+      console.error("Ошибка при создании заказа:", error);
+      setMessage("Ошибка при создании заказа.");
+    }
   };
 
   return (
@@ -18,8 +30,8 @@ const CreateOrder = () => {
       <div className="container py-5">
         <h2 className="section-title">Выставить заказ</h2>
         <div className="create-order-card">
-          {success && <div className="alert alert-success">{success}</div>}
-          <form onSubmit={handleSubmit}>
+          {message && <div className="alert alert-info">{message}</div>}
+          <form onSubmit={handleCreateOrder}>
             <div className="mb-3">
               <label className="form-label">Название</label>
               <input
@@ -62,4 +74,4 @@ const CreateOrder = () => {
   );
 };
 
-export default CreateOrder;
+export default Orders;

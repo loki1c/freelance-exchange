@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./components/pages/Navbar/Navbar";
 import Home from "./components/pages/Home/Home";
 import FindOrder from "./components/pages/AllOrder/AllOrder";
-import CreateOrder from "./components/pages/CreateOrder/CreateOrder";
+import Orders from "./components/pages/Orders/Orders";
 import Profile from "./components/pages/Profile/Profile";
 import Login from "./components/pages/Login/Login";
 import Registration from "./components/pages/Registration/Registration";
@@ -19,7 +19,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/AllOrder" element={<FindOrder />} />
-          <Route path="/create-order" element={<CreateOrder />} />
+          <Route path="/profile/orders" element={<Orders />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/login" element={<Login />} />
           <Route path="/registration" element={<Registration />} />

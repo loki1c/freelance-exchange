@@ -7,8 +7,6 @@ import "./Profile.css";
 const Profile = () => {
   const navigate = useNavigate();
   const [orders, setOrders] = useState([]);
-  const [newOrder, setNewOrder] = useState({ title: "", description: "", price: "" });
-  const [editingOrder, setEditingOrder] = useState(null);
   const [message, setMessage] = useState("");
 
   useEffect(() => {
@@ -29,63 +27,15 @@ const Profile = () => {
     }
   };
 
-  const handleCreateOrder = async (e) => {
-    e.preventDefault();
-    setMessage(""); // Очистка предыдущих сообщений
+  const handleDeleteOrder = async (order) => {
+    setMessage("");
     try {
-      const response = await axios.post("/api/user/profile/orders", newOrder, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
-      setOrders([...orders, response.data]);
-      setNewOrder({ title: "", description: "", price: "" });
-      setMessage("Заказ успешно создан.");
-    } catch (error) {
-      console.error("Ошибка при создании заказа:", error);
-      setMessage("Ошибка при создании заказа.");
-    }
-  };
-
-  const handleEditOrder = (order) => {
-    setEditingOrder(order);
-    setNewOrder({ title: order.title, description: order.description, price: order.price });
-  };
-
-  const handleUpdateOrder = async (e) => {
-    e.preventDefault();
-    setMessage(""); // Очистка предыдущих сообщений
-    try {
-      const response = await axios.put(
-        `/api/user/profile/orders/${editingOrder.id}`,
-        newOrder,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
-      setOrders(orders.map((order) => (order.id === response.data.id ? response.data : order)));
-      setEditingOrder(null);
-      setNewOrder({ title: "", description: "", price: "" });
-      setMessage("Заказ успешно обновлен.");
-    } catch (error) {
-      console.error("Ошибка при обновлении заказа:", error);
-      setMessage("Ошибка при обновлении заказа.");
-    }
-  };
-
-  const handleDeleteOrder = async (id) => {
-    setMessage(""); // Очистка предыдущих сообщений
-    try {
-      await axios.delete(`/api/user/profile/orders/${id}`, {
+      await axios.delete(`/api/user/profile/orders/${order.id}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
-      setOrders(orders.filter((order) => order.id !== id));
+      setOrders(orders.filter((o) => o.id !== order.id));
       setMessage("Заказ успешно удален.");
     } catch (error) {
       console.error("Ошибка при удалении заказа:", error);
@@ -98,56 +48,13 @@ const Profile = () => {
       <div className="container py-5">
         <h2 className="section-title">Мой профиль</h2>
 
-        <div className="card mb-4 profile-form-card">
-          <div className="card-body">
-            <h5 className="form-title">{editingOrder ? "Редактировать заказ" : "Создать новый заказ"}</h5>
-            <form onSubmit={editingOrder ? handleUpdateOrder : handleCreateOrder}>
-              <div className="mb-3">
-                <label className="form-label">Название</label>
-                <input
-                  type="text"
-                  className="form-control custom-input"
-                  value={newOrder.title}
-                  onChange={(e) => setNewOrder({ ...newOrder, title: e.target.value })}
-                  required
-                />
-              </div>
-              <div className="mb-3">
-                <label className="form-label">Описание</label>
-                <textarea
-                  className="form-control custom-input"
-                  value={newOrder.description}
-                  onChange={(e) => setNewOrder({ ...newOrder, description: e.target.value })}
-                  required
-                />
-              </div>
-              <div className="mb-3">
-                <label className="form-label">Цена</label>
-                <input
-                  type="text"
-                  className="form-control custom-input"
-                  value={newOrder.price}
-                  onChange={(e) => setNewOrder({ ...newOrder, price: e.target.value })}
-                  required
-                />
-              </div>
-              <button type="submit" className="btn btn-primary custom-btn">
-                {editingOrder ? "Обновить" : "Создать"}
-              </button>
-              {editingOrder && (
-                <button
-                  type="button"
-                  className="btn btn-secondary custom-btn ms-2"
-                  onClick={() => {
-                    setEditingOrder(null);
-                    setNewOrder({ title: "", description: "", price: "" });
-                  }}
-                >
-                  Отмена
-                </button>
-              )}
-            </form>
-          </div>
+        <div className="d-flex justify-content-end mb-4">
+          <a
+            href="/profile/orders"
+            className="btn btn-success custom-btn"
+          >
+            Создать заказ
+          </a>
         </div>
 
         <h3 className="section-title">Мои заказы</h3>
@@ -176,14 +83,8 @@ const Profile = () => {
                         Подробнее
                       </button>
                       <button
-                        className="btn btn-warning custom-btn me-2"
-                        onClick={() => handleEditOrder(order)}
-                      >
-                        Редактировать
-                      </button>
-                      <button
                         className="btn btn-danger custom-btn"
-                        onClick={() => handleDeleteOrder(order.id)}
+                        onClick={() => handleDeleteOrder(order)}
                       >
                         Удалить
                       </button>
