@@ -1,19 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
-import "./Login.css"; // Новый стиль
+import { Link, useNavigate } from "react-router-dom";
+import { AuthContext } from "../../../context/AuthContext";
+import "./Login.css";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const { login } = useContext(AuthContext); // <-- получаем login из контекста
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(""); // Очистка ошибок перед запросом
+    setError("");
 
     try {
-      // Отправляем запрос на сервер
       const response = await axios.post("/api/login", {
         email,
         password,
@@ -21,14 +23,20 @@ const Login = () => {
 
       console.log("Успешный вход:", response.data);
 
-      // Сохранение токена в localStorage
+      // Сохраняем токен (если нужен)
       localStorage.setItem("token", response.data.token);
 
-      // Перенаправление пользователя на главную страницу
-      window.location.href = "/profile";
-      
+      // Вызываем login из контекста, передаём пользователя
+      const userData = {
+        email: response.data.user.email,
+        name: response.data.user.name,
+        // любые другие данные пользователя
+      };
+      login(userData); // <-- обновляем контекст
+
+      navigate("/profile"); // редирект
+
     } catch (err) {
-      // Обработка ошибки
       console.error("Ошибка входа:", err.response?.data?.message || err.message);
       setError(err.response?.data?.message || "Ошибка входа");
     }

@@ -1,17 +1,18 @@
 import React, { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../../context/AuthContext";
-import ChatWindow from "./ChatWindow";
+import ChatWindow from "../Chat/ChatWindow";
+import { ReactComponent as ProfileIcon } from './icons/profile-icon.svg';
 import "./Navbar.css";
 
 const Navbar = () => {
-  const { isAuthenticated, user, logout } = useContext(AuthContext); // Получаем user из контекста
+  const { isAuthenticated, logout } = useContext(AuthContext);
   const [isChatOpen, setIsChatOpen] = useState(false);
   const navigate = useNavigate();
 
   const handleCreateOrderClick = () => {
     if (isAuthenticated) {
-      navigate("/create-order");
+      navigate("/profile/orders");
     } else {
       navigate("/auth-required");
     }
@@ -42,7 +43,7 @@ const Navbar = () => {
               <>
                 <li className="nav-item">
                   <Link className="nav-link custom-nav-link" to="/profile">
-                    {user?.name || "Мой профиль"} {/* Отображаем имя пользователя */}
+                    <ProfileIcon className="profile-icon" />
                   </Link>
                 </li>
                 <li className="nav-item">
@@ -57,8 +58,8 @@ const Navbar = () => {
                   <button
                     className="nav-link custom-nav-button logout"
                     onClick={() => {
-                      logout(); // Вызываем logout из контекста
-                      navigate("/"); // Перенаправляем на главную страницу после выхода
+                      logout();
+                      navigate("/");
                     }}
                   >
                     Выйти
@@ -80,4 +81,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default Navbar;

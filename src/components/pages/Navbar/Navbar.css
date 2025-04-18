@@ -84,3 +84,15 @@
   border: 1px solid #dc3545; /* Красная обводка остается */
   box-shadow: 0 4px 8px rgba(220, 53, 69, 0.3); /* Красное свечение */
 }
+.profile-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: #f0f0f0;
+  padding: 4px;
+  transition: background-color 0.3s;
+}
+
+.profile-icon:hover {
+  background-color: #e0e0e0;
+}

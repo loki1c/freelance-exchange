@@ -78,7 +78,7 @@ const Profile = () => {
                     <div className="order-actions">
                       <button
                         className="btn btn-primary custom-btn me-2"
-                        onClick={() => navigate(`/order/${order.id}`)}
+                        onClick={() => navigate(`/profile/orders/${order.id}`)}
                       >
                         Подробнее
                       </button>

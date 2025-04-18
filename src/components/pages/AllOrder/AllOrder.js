@@ -48,7 +48,7 @@ const AllOrder = () => {
                     <p className="order-description">{order.description}</p>
                     <p className="order-price">{order.price}</p>
                     <Link
-                      to={`/order/${order.id}`}
+                      to={`/profile/orders/${order.id}`}
                       className="btn btn-primary"
                     >
                       Подробнее
