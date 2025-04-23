@@ -1,13 +1,32 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { useNavigate, Link } from "react-router-dom"; // Импортируем useNavigate и Link
+import { useNavigate, Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./Registration.css";
 
 const Registration = () => {
-  const [formData, setFormData] = useState({ name: "", email: "", password: "" });
+  const [formData, setFormData] = useState({
+    login: "",
+    firstname: "",
+    lastname: "",
+    phone: "",
+    city: "",
+    email: "",
+    password: "",
+    password_confirmation: "", // Добавлено поле для подтверждения пароля
+  });
   const [error, setError] = useState(""); // Для отображения ошибки
   const navigate = useNavigate(); // Для навигации
+
+  // Жестко закодированный список городов
+  const cities = [
+    'Актау', 'Актобе', 'Алматы', 'Астана', 'Атырау', 'Балхаш',
+    'Екибастуз', 'Жезказган', 'Жетысай', 'Караганда', 'Кокшетау',
+    'Костанай', 'Кулсары', 'Кызылорда', 'Павлодар', 'Петропавловск',
+    'Риддер', 'Семей', 'Степногорск', 'Талдыкорган', 'Тараз',
+    'Текели', 'Темиртау', 'Туркестан', 'Уральск', 'Усть-Каменогорск',
+    'Шалкар', 'Шардара', 'Шахтинск', 'Шемонаиха', 'Шымкент'
+  ];
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -16,6 +35,12 @@ const Registration = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(""); // Очистка ошибок перед запросом
+
+    // Проверка на совпадение паролей
+    if (formData.password !== formData.password_confirmation) {
+      setError("Пароли не совпадают");
+      return;
+    }
 
     try {
       const response = await axios.post("/api/registration", formData, {
@@ -48,16 +73,68 @@ const Registration = () => {
           {error && <div className="alert alert-danger">{error}</div>}
           <form onSubmit={handleSubmit}>
             <div className="mb-3">
-              <label className="form-label">Имя</label>
+              <label className="form-label">Логин</label>
               <input
                 type="text"
-                name="name"
+                name="login"
                 className="form-control"
-                placeholder="Введите ваше имя"
-                value={formData.name}
+                placeholder="Введите логин"
+                value={formData.login}
                 onChange={handleChange}
                 required
               />
+            </div>
+            <div className="mb-3">
+              <label className="form-label">Имя</label>
+              <input
+                type="text"
+                name="firstname"
+                className="form-control"
+                placeholder="Введите ваше имя"
+                value={formData.firstname}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <div className="mb-3">
+              <label className="form-label">Фамилия</label>
+              <input
+                type="text"
+                name="lastname"
+                className="form-control"
+                placeholder="Введите вашу фамилию"
+                value={formData.lastname}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <div className="mb-3">
+              <label className="form-label">Телефон</label>
+              <input
+                type="text"
+                name="phone"
+                className="form-control"
+                placeholder="Введите телефон"
+                value={formData.phone}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="mb-3">
+              <label className="form-label">Город</label>
+              <select
+                name="city"
+                className="form-control"
+                value={formData.city}
+                onChange={handleChange}
+                required
+              >
+                <option value="">Выберите город</option>
+                {cities.map((city, index) => (
+                  <option key={index} value={city}>
+                    {city}
+                  </option>
+                ))}
+              </select>
             </div>
             <div className="mb-3">
               <label className="form-label">Email</label>
@@ -79,6 +156,18 @@ const Registration = () => {
                 className="form-control"
                 placeholder="Введите пароль"
                 value={formData.password}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <div className="mb-3">
+              <label className="form-label">Подтверждение пароля</label>
+              <input
+                type="password"
+                name="password_confirmation"
+                className="form-control"
+                placeholder="Подтвердите пароль"
+                value={formData.password_confirmation}
                 onChange={handleChange}
                 required
               />

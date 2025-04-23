@@ -24,7 +24,14 @@ const Orders = () => {
   };
 
   useEffect(() => {
-    fetchOrders();
+    const savedOrder = localStorage.getItem("editOrder");
+    if (savedOrder) {
+      const parsedOrder = JSON.parse(savedOrder);
+      setOrder(parsedOrder);
+      setIsEditing(true);
+      setEditOrderId(parsedOrder.id);
+      localStorage.removeItem("editOrder"); // очищаем после загрузки
+    }
   }, []);
 
   const handleSubmit = async (e) => {
@@ -54,28 +61,6 @@ const Orders = () => {
     } catch (err) {
       console.error("Ошибка при отправке:", err);
       setMessage("Произошла ошибка при сохранении заказа.");
-    }
-  };
-
-  const handleEdit = (o) => {
-    setOrder({ title: o.title, description: o.description, price: o.price });
-    setIsEditing(true);
-    setEditOrderId(o.id);
-    setMessage("");
-  };
-
-  const handleDelete = async (id) => {
-    if (!window.confirm("Вы уверены, что хотите удалить заказ?")) return;
-
-    try {
-      await axios.delete(`/api/user/profile/orders/${id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      setMessage("Заказ удалён.");
-      fetchOrders();
-    } catch (err) {
-      console.error("Ошибка при удалении заказа:", err);
-      setMessage("Не удалось удалить заказ.");
     }
   };
 
@@ -120,43 +105,7 @@ const Orders = () => {
             </button>
           </form>
         </div>
-
-        <hr className="my-5" />
-        <h3 className="section-title">Мои заказы</h3>
         {orders.length === 0 && <p>У вас пока нет заказов.</p>}
-
-        <div className="row g-4">
-          {orders.map((o) => (
-            <div key={o.id} className="col-md-4">
-              <div className="order-card">
-                <img
-                  src="https://via.placeholder.com/400x200"
-                  alt="order"
-                  className="order-image"
-                />
-                <div className="order-info">
-                  <h5 className="order-title">{o.title}</h5>
-                  <p className="order-description">{o.description}</p>
-                  <p className="order-price">{o.price} тг</p>
-                  <div className="d-flex justify-content-between mt-3">
-                    <button
-                      className="btn btn-sm btn-warning me-2"
-                      onClick={() => handleEdit(o)}
-                    >
-                      Редактировать
-                    </button>
-                    <button
-                      className="btn btn-sm btn-danger"
-                      onClick={() => handleDelete(o.id)}
-                    >
-                      Удалить
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
       </div>
     </div>
   );
