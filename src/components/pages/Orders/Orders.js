@@ -4,7 +4,13 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./Orders.css";
 
 const Orders = () => {
-  const [order, setOrder] = useState({ title: "", description: "", price: "" });
+  const [order, setOrder] = useState({
+    title: "",
+    description: "",
+    price: "",
+    category: "",
+    deadline: "",
+  });
   const [orders, setOrders] = useState([]);
   const [message, setMessage] = useState("");
   const [isEditing, setIsEditing] = useState(false);
@@ -54,7 +60,13 @@ const Orders = () => {
         setMessage("Заказ успешно создан!");
       }
 
-      setOrder({ title: "", description: "", price: "" });
+      setOrder({
+        title: "",
+        description: "",
+        price: "",
+        category: "",
+        deadline: "",
+      });
       setIsEditing(false);
       setEditOrderId(null);
       fetchOrders();
@@ -100,12 +112,37 @@ const Orders = () => {
                 required
               />
             </div>
+            <div className="mb-3">
+              <label className="form-label">Категория</label>
+              <select
+                className="form-control"
+                value={order.category}
+                onChange={(e) => setOrder({ ...order, category: e.target.value })}
+                required
+              >
+                <option value="">Выберите категорию</option>
+                <option value="Desktop Development">Десктопная разработка</option>
+                <option value="Mobile Development">Мобильная разработка</option>
+                <option value="Web Backend">Бэкенд: C++, Python, Java, C#</option>
+                <option value="Web Frontend">Фронтенд: JavaScript, TypeScript</option>
+                <option value="Game Development">Разработка игр</option>
+              </select>
+            </div>
+            <div className="mb-3">
+              <label className="form-label">Срок выполнения</label>
+              <input
+                type="date"
+                className="form-control"
+                value={order.deadline}
+                onChange={(e) => setOrder({ ...order, deadline: e.target.value })}
+                required
+              />
+            </div>
             <button type="submit" className="btn btn-primary">
               {isEditing ? "Сохранить изменения" : "Создать заказ"}
             </button>
           </form>
         </div>
-        {orders.length === 0 && <p>У вас пока нет заказов.</p>}
       </div>
     </div>
   );
