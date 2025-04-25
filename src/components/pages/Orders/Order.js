@@ -5,20 +5,21 @@ import ChatWindow from "../Chat/ChatWindow"; // путь к ChatWindow
 import "./Orders.css";
 
 const Order = () => {
-  const { id } = useParams();
-  const [order, setOrder] = useState(null);
-  const [error, setError] = useState("");
-  const [showChat, setShowChat] = useState(false);
+  const { id } = useParams();  // Получаем ID из параметров URL
+  const [order, setOrder] = useState(null);  // Состояние для хранения данных заказа
+  const [error, setError] = useState("");  // Состояние для ошибок
+  const [showChat, setShowChat] = useState(false);  // Состояние для отображения чата
 
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem("token");  // Получаем токен из localStorage для аутентификации
 
+  // Функция для получения данных о заказе
   useEffect(() => {
     const fetchOrder = async () => {
       try {
-        const res = await axios.get(`/api/orders/${id}`, {
+        const res = await axios.get(`/api/user/profile/orders/${id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        setOrder(res.data);
+        setOrder(res.data);  // Сохраняем данные заказа
       } catch (err) {
         console.error("Ошибка при получении заказа:", err);
         setError("Не удалось загрузить заказ.");
@@ -26,7 +27,7 @@ const Order = () => {
     };
 
     fetchOrder();
-  }, [id]);
+  }, [id, token]);
 
   // Форматирование даты
   const formatDate = (dateString) => {
@@ -53,6 +54,28 @@ const Order = () => {
             <p className="order-price">
               <strong>Цена:</strong> {order.price} тг
             </p>
+            <p className="order-category">
+              <strong>Категория:</strong> {order.category || "Не указана"}
+            </p>
+            <p className="order-deadline">
+              <strong>Срок выполнения:</strong> {order.deadline ? formatDate(order.deadline) : "Не указан"}
+            </p>
+            {order.file && (
+              <p className="order-file">
+                <strong>Файл:</strong>{" "}
+                <div>
+                  {/* Кнопка "Открыть файл" */}
+                  <a
+                    href={`http://localhost:8000/storage/${order.file}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ marginRight: '10px' }}
+                  >
+                    Скачать файл
+                  </a>
+                </div>
+              </p>
+            )}
             <p className="order-status">
               <strong>Статус:</strong>{" "}
               <span className={`status-${order.status?.toLowerCase()}`}>
@@ -70,8 +93,11 @@ const Order = () => {
             </p>
           </div>
 
-          {/* Кнопка "Написать" */}
-          <button className="btn btn-primary mt-3" onClick={() => setShowChat(true)}>
+          {/* Кнопка "Написать" для открытия чата */}
+          <button
+            className="btn btn-primary mt-3"
+            onClick={() => setShowChat(true)}
+          >
             Написать
           </button>
         </div>
