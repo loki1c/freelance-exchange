@@ -9,41 +9,61 @@ const AllOrder = () => {
   const [filteredOrders, setFilteredOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [categories, setCategories] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState([]);
+  const [viewCounts, setViewCounts] = useState({}); // Состояние для хранения количества просмотров каждого заказа
 
   useEffect(() => {
-    axios
-      .get('/api/user/orders', {
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`,
-        },
-      })
-      .then((response) => {
+    const fetchOrders = async () => {
+      try {
+        const response = await axios.get('/api/user/orders', {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`,
+          },
+        });
+        
         setOrders(response.data);
         setFilteredOrders(response.data);
         setLoading(false);
+
         // Сет категории из всех заказов
         const uniqueCategories = [
           ...new Set(response.data.map((order) => order.category).filter((category) => category))
         ];
         setCategories(uniqueCategories);
-      })
-      .catch((error) => {
+
+        // Запрос на получение количества просмотров для каждого заказа
+        const viewCountPromises = response.data.map(async (order) => {
+          const viewCountResponse = await axios.get(`/api/user/profile/orders/${order.id}/view-count`, {
+            headers: {
+              'Authorization': `Bearer ${localStorage.getItem('token')}`,
+            },
+          });
+          return { orderId: order.id, viewCount: viewCountResponse.data.view_count };
+        });
+
+        const viewCountsData = await Promise.all(viewCountPromises);
+        const viewCountsObj = viewCountsData.reduce((acc, { orderId, viewCount }) => {
+          acc[orderId] = viewCount;
+          return acc;
+        }, {});
+        setViewCounts(viewCountsObj);
+      } catch (error) {
         console.error("There was an error fetching the orders!", error);
         setLoading(false);
-      });
+      }
+    };
+
+    fetchOrders();
   }, []);
 
   const handleCategoryChange = (event) => {
     const category = event.target.value;
     setSelectedCategory(category);
-    
+
     if (category === "") {
       setFilteredOrders(orders);  // Показываем все заказы
     } else {
-      setFilteredOrders(
-        orders.filter((order) => order.category === category)
-      );  // Фильтруем заказы по выбранной категории
+      setFilteredOrders(orders.filter((order) => order.category === category));  // Фильтруем заказы по выбранной категории
     }
   };
 
@@ -97,6 +117,11 @@ const AllOrder = () => {
                     {/* Дедлайн заказа */}
                     <p className="order-deadline">
                       <strong>Дедлайн:</strong> {order.deadline ? new Date(order.deadline).toLocaleDateString() : "Не указан"}
+                    </p>
+
+                    {/* Количество просмотров */}
+                    <p className="order-view-count">
+                      <strong>Просмотры:</strong> {viewCounts[order.id] || 0}
                     </p>
 
                     <Link

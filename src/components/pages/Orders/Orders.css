@@ -263,3 +263,6 @@ textarea.form-control {
     font-size: 0.9rem;
   }
 }
+.views-counter{
+  align-items: baseline;
+}

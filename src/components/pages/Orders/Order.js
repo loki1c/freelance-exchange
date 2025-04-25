@@ -7,27 +7,35 @@ import "./Orders.css";
 const Order = () => {
   const { id } = useParams();  // Получаем ID из параметров URL
   const [order, setOrder] = useState(null);  // Состояние для хранения данных заказа
+  const [viewCount, setViewCount] = useState(0);  // Состояние для хранения количества просмотров
   const [error, setError] = useState("");  // Состояние для ошибок
   const [showChat, setShowChat] = useState(false);  // Состояние для отображения чата
 
   const token = localStorage.getItem("token");  // Получаем токен из localStorage для аутентификации
 
-  // Функция для получения данных о заказе
+  // Функция для получения данных о заказе и количества просмотров
   useEffect(() => {
-    const fetchOrder = async () => {
+    const fetchData = async () => {
       try {
-        const res = await axios.get(`/api/user/profile/orders/${id}`, {
+        // Запрос на получение данных о заказе
+        const orderRes = await axios.get(`/api/user/profile/orders/${id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        setOrder(res.data);  // Сохраняем данные заказа
+        setOrder(orderRes.data);  // Сохраняем данные заказа
+
+        // Запрос на получение количества просмотров
+        const viewCountRes = await axios.get(`/api/user/profile/orders/${id}/view-count`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setViewCount(viewCountRes.data.view_count);  // Сохраняем количество просмотров
       } catch (err) {
-        console.error("Ошибка при получении заказа:", err);
-        setError("Не удалось загрузить заказ.");
+        console.error("Ошибка при получении данных:", err);
+        setError("Не удалось загрузить данные.");
       }
     };
 
-    fetchOrder();
-  }, [id, token]);
+    fetchData();
+  }, [id, token]);  // Перезапускаем эффект при изменении ID заказа или токена
 
   // Форматирование даты
   const formatDate = (dateString) => {
@@ -90,6 +98,9 @@ const Order = () => {
             </p>
             <p className="order-email">
               <strong>Email автора:</strong> {order.user?.email || "Не указан"}
+            </p>
+            <p className="order-view-count">
+              <strong>Количество просмотров:</strong> {viewCount}
             </p>
           </div>
 
