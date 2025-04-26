@@ -7,6 +7,7 @@ import Orders from "./components/pages/Orders/Orders";
 import Profile from "./components/pages/Profile/Profile";
 import Login from "./components/pages/Login/Login";
 import Registration from "./components/pages/Registration/Registration";
+import CartPage from "./components/pages/CartPage/CartPage";
 import AuthRequired from "./components/pages/AuthRequired/AuthRequired";
 import { AuthProvider } from "./context/AuthContext";
 import Order from "./components/pages/Orders/Order";
@@ -26,6 +27,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/registration" element={<Registration />} />
           <Route path="/auth-required" element={<AuthRequired />} />
+          <Route path="/cart" element={<CartPage />} />
         </Routes>
       </Router>
     </AuthProvider>

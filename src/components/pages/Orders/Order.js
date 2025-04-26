@@ -10,6 +10,7 @@ const Order = () => {
   const [viewCount, setViewCount] = useState(0);  // Состояние для хранения количества просмотров
   const [error, setError] = useState("");  // Состояние для ошибок
   const [showChat, setShowChat] = useState(false);  // Состояние для отображения чата
+  const [loading, setLoading] = useState(true);  // Состояние для загрузки
 
   const token = localStorage.getItem("token");  // Получаем токен из localStorage для аутентификации
 
@@ -31,11 +32,30 @@ const Order = () => {
       } catch (err) {
         console.error("Ошибка при получении данных:", err);
         setError("Не удалось загрузить данные.");
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchData();
   }, [id, token]);  // Перезапускаем эффект при изменении ID заказа или токена
+
+  // Функция для добавления заказа в корзину
+  const handleAddToCart = async () => {
+    try {
+      const response = await axios.post(
+        `/api/user/profile/orders/${id}/add-to-cart`,
+        {},
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      alert(response.data.message); // Сообщение о добавлении в корзину
+    } catch (error) {
+      console.error("Ошибка при добавлении в корзину:", error);
+      alert("Произошла ошибка при добавлении в корзину.");
+    }
+  };
 
   // Форматирование даты
   const formatDate = (dateString) => {
@@ -49,8 +69,9 @@ const Order = () => {
     });
   };
 
+  if (loading) return <div className="loading">Загрузка...</div>;
   if (error) return <div className="alert alert-danger">{error}</div>;
-  if (!order) return <div className="loading">Загрузка...</div>;
+  if (!order) return <div className="order-not-found">Заказ не найден.</div>;
 
   return (
     <div className="create-order-page">
@@ -103,6 +124,14 @@ const Order = () => {
               <strong>Количество просмотров:</strong> {viewCount}
             </p>
           </div>
+
+          {/* Кнопка "Добавить в корзину" */}
+          <button
+            className="btn btn-success mt-3"
+            onClick={handleAddToCart}
+          >
+            Добавить в корзину
+          </button>
 
           {/* Кнопка "Написать" для открытия чата */}
           <button

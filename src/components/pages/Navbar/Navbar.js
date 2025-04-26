@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../../context/AuthContext";
 import ChatWindow from "../Chat/ChatWindow";
 import { ReactComponent as ProfileIcon } from './icons/profile-icon.svg';
+import { ReactComponent as CartIcon } from './icons/cart-icon.svg'; // Add cart icon here
 import "./Navbar.css";
 
 const Navbar = () => {
@@ -73,6 +74,12 @@ const Navbar = () => {
                 </Link>
               </li>
             )}
+            {/* Add cart icon */}
+            <li className="nav-item">
+              <Link className="nav-link custom-nav-link" to="/cart">
+                <CartIcon className="cart-icon" />
+              </Link>
+            </li>
           </ul>
         </div>
       </div>
