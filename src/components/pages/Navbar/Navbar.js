@@ -2,8 +2,9 @@ import React, { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../../context/AuthContext";
 import ChatWindow from "../Chat/ChatWindow";
-import { ReactComponent as ProfileIcon } from './icons/profile-icon.svg';
-import { ReactComponent as CartIcon } from './icons/cart-icon.svg'; // Add cart icon here
+import { ReactComponent as ProfileIcon } from '../Navbar/icons/profile-icon.svg';
+import { ReactComponent as CartIcon } from '../Navbar/icons/cart-icon.svg';
+import { ReactComponent as BellIcon } from '../Navbar/icons/bell-icon.svg';
 import "./Navbar.css";
 
 const Navbar = () => {
@@ -74,10 +75,16 @@ const Navbar = () => {
                 </Link>
               </li>
             )}
-            {/* Add cart icon */}
+            {/* Иконка корзины */}
             <li className="nav-item">
               <Link className="nav-link custom-nav-link" to="/cart">
                 <CartIcon className="cart-icon" />
+              </Link>
+            </li>
+            {/* Иконка уведомлений */}
+            <li className="nav-item">
+              <Link className="nav-link custom-nav-link" to="/notifications">
+                <BellIcon className="cart-icon" />
               </Link>
             </li>
           </ul>

@@ -1,34 +1,31 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import ChatWindow from "../Chat/ChatWindow"; // путь к ChatWindow
+import ChatWindow from "../Chat/ChatWindow";
 import "./Orders.css";
 
 const Order = () => {
-  const { id } = useParams();  // Получаем ID из параметров URL
-  const [order, setOrder] = useState(null);  // Состояние для хранения данных заказа
-  const [viewCount, setViewCount] = useState(0);  // Состояние для хранения количества просмотров
-  const [error, setError] = useState("");  // Состояние для ошибок
-  const [showChat, setShowChat] = useState(false);  // Состояние для отображения чата
-  const [loading, setLoading] = useState(true);  // Состояние для загрузки
+  const { id } = useParams();
+  const [order, setOrder] = useState(null);
+  const [viewCount, setViewCount] = useState(0);
+  const [error, setError] = useState("");
+  const [showChat, setShowChat] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  const token = localStorage.getItem("token");  // Получаем токен из localStorage для аутентификации
+  const token = localStorage.getItem("token");
 
-  // Функция для получения данных о заказе и количества просмотров
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Запрос на получение данных о заказе
         const orderRes = await axios.get(`/api/user/profile/orders/${id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        setOrder(orderRes.data);  // Сохраняем данные заказа
+        setOrder(orderRes.data);
 
-        // Запрос на получение количества просмотров
         const viewCountRes = await axios.get(`/api/user/profile/orders/${id}/view-count`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        setViewCount(viewCountRes.data.view_count);  // Сохраняем количество просмотров
+        setViewCount(viewCountRes.data.view_count);
       } catch (err) {
         console.error("Ошибка при получении данных:", err);
         setError("Не удалось загрузить данные.");
@@ -38,9 +35,8 @@ const Order = () => {
     };
 
     fetchData();
-  }, [id, token]);  // Перезапускаем эффект при изменении ID заказа или токена
+  }, [id, token]);
 
-  // Функция для добавления заказа в корзину
   const handleAddToCart = async () => {
     try {
       const response = await axios.post(
@@ -50,14 +46,30 @@ const Order = () => {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-      alert(response.data.message); // Сообщение о добавлении в корзину
+      alert(response.data.message);
     } catch (error) {
       console.error("Ошибка при добавлении в корзину:", error);
       alert("Произошла ошибка при добавлении в корзину.");
     }
   };
 
-  // Форматирование даты
+  const handleAcceptOrder = async () => {
+    try {
+      const response = await axios.post(
+        `/api/user/profile/orders/${id}/send-request`,
+        {},
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      alert(response.data.message);
+    } catch (error) {
+      console.error("Ошибка при принятии заказа:", error);
+      alert("Произошла ошибка при отклике на заказ.");
+    }
+  };
+  
+
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     return date.toLocaleDateString("ru-RU", {
@@ -93,7 +105,6 @@ const Order = () => {
               <p className="order-file">
                 <strong>Файл:</strong>{" "}
                 <div>
-                  {/* Кнопка "Открыть файл" */}
                   <a
                     href={`http://localhost:8000/storage/${order.file}`}
                     target="_blank"
@@ -125,27 +136,37 @@ const Order = () => {
             </p>
           </div>
 
-          {/* Кнопка "Добавить в корзину" */}
-          <button
-            className="btn btn-success mt-3"
-            onClick={handleAddToCart}
-          >
-            Добавить в корзину
-          </button>
+          <div className="order-buttons">
+            {/* Кнопка "Добавить в корзину" */}
+            <button
+              className="btn btn-success mt-3 me-2"
+              onClick={handleAddToCart}
+            >
+              Добавить в корзину
+            </button>
 
-          {/* Кнопка "Написать" для открытия чата */}
-          <button
-            className="btn btn-primary mt-3"
-            onClick={() => setShowChat(true)}
-          >
-            Написать
-          </button>
+            {/* Кнопка "Написать" */}
+            <button
+              className="btn btn-primary mt-3 me-2"
+              onClick={() => setShowChat(true)}
+            >
+              Написать
+            </button>
+
+            {/* Кнопка "Принять заказ" */}
+            <button
+              className="btn btn-warning mt-3"
+              onClick={handleAcceptOrder}
+            >
+              Принять заказ
+            </button>
+          </div>
+
+          {/* Чат появляется при нажатии */}
+          {showChat && (
+            <ChatWindow orderId={id} onClose={() => setShowChat(false)} />
+          )}
         </div>
-
-        {/* Чат появляется при нажатии */}
-        {showChat && (
-          <ChatWindow orderId={id} onClose={() => setShowChat(false)} />
-        )}
       </div>
     </div>
   );
