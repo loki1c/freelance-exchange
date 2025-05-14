@@ -15,7 +15,7 @@ const AllOrder = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await axios.get('/api/user/orders', {
+        const response = await axios.get('http://127.0.0.1:8000/api/user/orders', {
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}`,
           },
@@ -33,7 +33,7 @@ const AllOrder = () => {
 
         // Запрос на получение количества просмотров для каждого заказа
         const viewCountPromises = response.data.map(async (order) => {
-          const viewCountResponse = await axios.get(`/api/user/profile/orders/${order.id}/view-count`, {
+          const viewCountResponse = await axios.get(`http://127.0.0.1:8000/api/user/profile/orders/${order.id}/view-count`, {
             headers: {
               'Authorization': `Bearer ${localStorage.getItem('token')}`,
             },

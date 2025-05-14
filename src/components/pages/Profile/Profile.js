@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"; 
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -12,6 +12,8 @@ const Profile = () => {
     phone: "",
     city: "",
     email: "",
+    photo: "", // Для хранения пути к фото
+    photoFile: null, // Для файла изображения
   });
   const [message, setMessage] = useState("");
   const [isEditing, setIsEditing] = useState(false); // Флаг редактирования данных профиля
@@ -25,7 +27,7 @@ const Profile = () => {
 
   const fetchOrders = async () => {
     try {
-      const response = await axios.get("/api/user/profile/orders", {
+      const response = await axios.get("http://127.0.0.1:8000/api/user/profile/orders", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -39,7 +41,7 @@ const Profile = () => {
 
   const fetchUserData = async () => {
     try {
-      const response = await axios.get("/api/user/profile", {
+      const response = await axios.get("http://127.0.0.1:8000/api/user/profile", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -51,6 +53,7 @@ const Profile = () => {
         phone: user.phone,
         city: user.city,
         email: user.email,
+        photo: user.photo, // Загрузка фото
       });
     } catch (error) {
       console.error("Ошибка при загрузке данных пользователя:", error);
@@ -66,7 +69,7 @@ const Profile = () => {
   const handleDeleteOrder = async (order) => {
     setMessage("");
     try {
-      await axios.delete(`/api/user/profile/orders/${order.id}`, {
+      await axios.delete(`http://127.0.0.1:8000/api/user/profile/orders/${order.id}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -83,22 +86,56 @@ const Profile = () => {
     setUserData({ ...userData, [e.target.name]: e.target.value });
   };
 
+  const handlePhotoChange = (e) => {
+    const file = e.target.files[0];
+    setUserData((prevData) => ({
+      ...prevData,
+      photoFile: file,
+    }));
+  };
+
   const handleSaveChanges = async (e) => {
-    e.preventDefault();
-    try {
-      await axios.put("/api/user/profile", userData, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-          "Content-Type": "application/json",
-        },
-      });
-      setMessage("Данные успешно обновлены.");
-      setIsEditing(false);
-    } catch (error) {
-      console.error("Ошибка при обновлении данных:", error);
+  e.preventDefault();
+  const formData = new FormData();
+
+  // Laravel поймёт, что это PUT-запрос
+  formData.append("_method", "PUT");
+
+  formData.append("firstname", userData.firstname);
+  formData.append("lastname", userData.lastname);
+  formData.append("phone", userData.phone);
+  formData.append("city", userData.city);
+  formData.append("email", userData.email);
+
+  if (userData.photoFile) {
+    formData.append("photo", userData.photoFile);
+  }
+
+  try {
+    await axios.post("http://127.0.0.1:8000/api/user/profile", formData, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        "Content-Type": "multipart/form-data",
+      },
+    });
+
+    setMessage("Данные успешно обновлены.");
+    setIsEditing(false);
+    fetchUserData();
+  } catch (error) {
+    console.error("Ошибка при обновлении данных:", error);
+    if (error.response?.data?.errors) {
+      const errMsgs = Object.values(error.response.data.errors)
+        .flat()
+        .join(" ");
+      setMessage(errMsgs);
+    } else {
       setMessage("Не удалось обновить данные.");
     }
-  };
+  }
+};
+
+
 
   return (
     <div className="profile-page">
@@ -113,9 +150,27 @@ const Profile = () => {
 
         <h3 className="section-title">Мои данные</h3>
         {message && <p className="alert alert-info">{message}</p>}
-        
+
         {isEditing ? (
-          <form onSubmit={handleSaveChanges}>
+          <form onSubmit={handleSaveChanges} encType="multipart/form-data">
+            <div className="mb-3">
+              <label className="form-label">Фото профиля</label><br />
+              {userData.photo && (
+                <img
+                  src={`http://127.0.0.1:8000/storage/${userData.photo}`}
+                  alt="Аватар"
+                  className="img-thumbnail mb-2"
+                  width="150"
+                />
+              )}
+              <input
+                type="file"
+                name="photo"
+                className="form-control"
+                accept="image/*"
+                onChange={handlePhotoChange}
+              />
+            </div>
             <div className="mb-3">
               <label className="form-label">Имя</label>
               <input
@@ -180,6 +235,14 @@ const Profile = () => {
             <p><strong>Телефон:</strong> {userData.phone}</p>
             <p><strong>Город:</strong> {userData.city}</p>
             <p><strong>Email:</strong> {userData.email}</p>
+            {userData.photo && (
+              <img
+                src={`http://127.0.0.1:8000/storage/${userData.photo}`}
+                alt="Аватар"
+                className="img-thumbnail"
+                width="150"
+              />
+            )}
             <button
               className="btn btn-warning"
               onClick={() => setIsEditing(true)}

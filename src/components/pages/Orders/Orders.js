@@ -22,7 +22,7 @@ const Orders = () => {
   // Используем useCallback для избежания перерасчета функции fetchOrders
   const fetchOrders = useCallback(async () => {
     try {
-      const response = await axios.get("/api/user/profile/orders", {
+      const response = await axios.get("http://127.0.0.1:8000/api/user/profile/orders", {
         headers: { Authorization: `Bearer ${token}` },
       });
       setOrders(response.data);
@@ -72,10 +72,10 @@ const Orders = () => {
 
     try {
       if (isEditing) {
-        await axios.put(`/api/user/profile/orders/${editOrderId}`, formData, config);
+        await axios.put(`http://127.0.0.1:8000/api/user/profile/orders/${editOrderId}`, formData, config);
         setMessage("Заказ успешно обновлён!");
       } else {
-        await axios.post("/api/user/profile/orders", formData, config);
+        await axios.post("http://127.0.0.1:8000/api/user/profile/orders", formData, config);
         setMessage("Заказ успешно создан!");
       }
 

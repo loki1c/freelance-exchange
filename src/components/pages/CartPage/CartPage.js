@@ -14,7 +14,7 @@ const CartPage = () => {
   const fetchCartOrders = async () => {
     try {
       const token = localStorage.getItem("token"); // Твой токен для авторизации
-      const response = await axios.get("/api/user/profile/cart", {
+      const response = await axios.get("http://127.0.0.1:8000/api/user/profile/cart", {
         headers: {
           Authorization: `Bearer ${token}`,
         },

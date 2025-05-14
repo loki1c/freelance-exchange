@@ -17,12 +17,12 @@ const Order = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const orderRes = await axios.get(`/api/user/profile/orders/${id}`, {
+        const orderRes = await axios.get(`http://127.0.0.1:8000/api/user/profile/orders/${id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setOrder(orderRes.data);
 
-        const viewCountRes = await axios.get(`/api/user/profile/orders/${id}/view-count`, {
+        const viewCountRes = await axios.get(`http://127.0.0.1:8000/api/user/profile/orders/${id}/view-count`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setViewCount(viewCountRes.data.view_count);
@@ -40,7 +40,7 @@ const Order = () => {
   const handleAddToCart = async () => {
     try {
       const response = await axios.post(
-        `/api/user/profile/orders/${id}/add-to-cart`,
+        `http://127.0.0.1:8000/api/user/profile/orders/${id}/add-to-cart`,
         {},
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -56,7 +56,7 @@ const Order = () => {
   const handleAcceptOrder = async () => {
     try {
       const response = await axios.post(
-        `/api/user/profile/orders/${id}/send-request`,
+        `http://127.0.0.1:8000/api/user/profile/orders/${id}/send-request`,
         {},
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -106,7 +106,7 @@ const Order = () => {
                 <strong>Файл:</strong>{" "}
                 <div>
                   <a
-                    href={`http://localhost:8000/storage/${order.file}`}
+                    href={`http://127.0.0.1:8000/storage/${order.file}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     style={{ marginRight: '10px' }}

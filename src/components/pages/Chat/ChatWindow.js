@@ -23,7 +23,7 @@ const ChatWindow = ({ orderId, onClose }) => {
     const fetchChat = async () => {
       setLoading(true);
       try {
-        const response = await axios.get(`/api/user/order/chat/${orderId}`, {
+        const response = await axios.get(`http://127.0.0.1:8000/api/user/order/chat/${orderId}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -83,7 +83,7 @@ const ChatWindow = ({ orderId, onClose }) => {
       const currentUserId = getUserIdFromToken(token);
 
       const response = await axios.post(
-        `/api/user/order/chat/${orderId}/message`,
+        `http://127.0.0.1:8000/api/user/order/chat/${orderId}/message`,
         {
           content: newMessage,
           recipient_id: recipientId, // может быть null, но Laravel обработает

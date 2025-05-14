@@ -43,7 +43,7 @@ const Registration = () => {
     }
 
     try {
-      const response = await axios.post("/api/registration", formData, {
+      const response = await axios.post("http://127.0.0.1:8000/api/registration", formData, {
         headers: {
           "Content-Type": "application/json",
           "Accept": "application/json",

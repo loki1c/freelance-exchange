@@ -5,6 +5,7 @@ import Home from "./components/pages/Home/Home";
 import FindOrder from "./components/pages/AllOrder/AllOrder";
 import Orders from "./components/pages/Orders/Orders";
 import Profile from "./components/pages/Profile/Profile";
+import ProfilePage from "./components/pages/Profile/ProfilePage";
 import Login from "./components/pages/Login/Login";
 import Registration from "./components/pages/Registration/Registration";
 import CartPage from "./components/pages/CartPage/CartPage";
@@ -25,6 +26,7 @@ function App() {
           <Route path="/profile/orders" element={<Orders />} />
           <Route path="/profile/orders/:id" element={<Order />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/profile/:id" element={<ProfilePage />} /> 
           <Route path="/login" element={<Login />} />
           <Route path="/registration" element={<Registration />} />
           <Route path="/auth-required" element={<AuthRequired />} />

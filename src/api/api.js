@@ -1,4 +1,4 @@
-const API_BASE_URL = "http://your-backend-api"; // Замени на URL твоего PHP-бэкенда
+const API_BASE_URL = "http://127.0.0.1:8000"; // Замени на URL твоего PHP-бэкенда
 
 const apiRequest = async (endpoint, method = "GET", body = null, token = null) => {
   const headers = {

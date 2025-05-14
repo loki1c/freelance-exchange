@@ -6,11 +6,12 @@ const Notifications = () => {
   const [incomingRequests, setIncomingRequests] = useState([]);
   const [myRequests, setMyRequests] = useState([]);
   const [view, setView] = useState("incoming"); // incoming | my
+  const [userOrders, setUserOrders] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
     // Получение входящих запросов (если ты владелец заказов)
-    axios.get("http://localhost:8000/api/notifications", {
+    axios.get("http://127.0.0.1:8000/api/notifications", {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
@@ -20,7 +21,7 @@ const Notifications = () => {
       .catch(err => console.error(err));
 
     // Получение собственных откликов на чужие заказы
-    axios.get("http://localhost:8000/api/user/order/my-requests", {
+    axios.get("http://127.0.0.1:8000/api/user/order/my-requests", {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
@@ -31,7 +32,7 @@ const Notifications = () => {
   }, []);
 
   const handleApprove = (orderId, requestId) => {
-    axios.post(`http://localhost:8000/api/user/profile/orders/${orderId}/approve-request/${requestId}`, {}, {
+    axios.post(`http://127.0.0.1:8000/api/user/profile/orders/${orderId}/approve-request/${requestId}`, {}, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
@@ -46,6 +47,17 @@ const Notifications = () => {
         console.error("Ошибка при принятии запроса:", err);
         alert("Ошибка при принятии запроса");
       });
+  };
+
+  const fetchUserOrders = (userId) => {
+    axios.get(`http://127.0.0.1:8000/api/user/profile/${userId}/profile`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+      withCredentials: true,
+    })
+      .then(res => setUserOrders(res.data))
+      .catch(err => console.error("Ошибка при загрузке заказов пользователя:", err));
   };
 
   const pendingIncoming = incomingRequests.filter(req => req.status === "Ожидает подтверждения");
@@ -72,7 +84,13 @@ const Notifications = () => {
             <ul>
               {pendingIncoming.map(req => (
                 <li key={req.id} style={{ marginBottom: "20px" }}>
-                  <strong>{req.user.firstname} {req.user.lastname}</strong> хочет выполнить заказ: <em>{req.order.title}</em><br />
+                  <strong>
+                    <a href={`/profile/${req.user.id}`} 
+                       style={{ color: "blue", textDecoration: "underline" }}
+                       onClick={() => fetchUserOrders(req.user.id)}>
+                      {req.user.firstname} {req.user.lastname}
+                    </a>
+                  </strong> хочет выполнить заказ: <em>{req.order.title}</em><br />
                   <button onClick={() => handleApprove(req.order.id, req.id)}>
                     Принять запрос
                   </button>
@@ -96,6 +114,20 @@ const Notifications = () => {
               ))}
             </ul>
           )}
+        </div>
+      )}
+
+      {userOrders.length > 0 && (
+        <div>
+          <h3>Публичные заказы пользователя</h3>
+          <ul>
+            {userOrders.map(order => (
+              <li key={order.id}>
+                <strong>{order.title}</strong><br />
+                Статус: {order.status}
+              </li>
+            ))}
+          </ul>
         </div>
       )}
     </div>
