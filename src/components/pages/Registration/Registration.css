@@ -1,41 +1,68 @@
 .registration-page {
-  background: linear-gradient(135deg, #0a0a23 0%, #1e1e3f 100%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
   min-height: 100vh;
-  color: white;
+  background-color: #f5f8ff;
+  padding: 20px;
+  box-sizing: border-box;
+  font-family: 'Arial', sans-serif;
+  color: #2c3e50;
 }
 
 .container {
+  width: 100%;
   max-width: 400px;
+  margin: 0 auto;
+  box-sizing: border-box;
 }
 
 .registration-card {
-  background: #1e1e3f;
+  background: #ffffff;
   border-radius: 15px;
-  padding: 30px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  padding: 30px 35px;
+  box-shadow: 0 6px 18px rgba(74, 111, 165, 0.15);
+  color: #2c3e50;
+  box-sizing: border-box;
+  width: 100%;
 }
 
 h2 {
   font-size: 2rem;
-  font-weight: bold;
-  color: #00ddeb;
+  font-weight: 700;
+  color: #4a6fa5;
+  margin-bottom: 25px;
+  text-align: center;
 }
 
 .form-label {
   font-size: 0.9rem;
-  color: #fff;
+  color: #4a6fa5;
+  font-weight: 600;
+  margin-bottom: 6px;
 }
 
 .form-control {
-  background: #2a2a5a;
-  border: none;
-  color: white;
+  background: #ffffff;
+  border: 1.5px solid #a7c7e7;
+  color: #2c3e50;
   border-radius: 10px;
-  padding: 10px;
+  padding: 12px 14px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 1px 4px rgba(74, 111, 165, 0.15);
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .form-control::placeholder {
-  color: #aaa;
+  color: #aab8d3;
+}
+
+.form-control:focus {
+  border-color: #4a6fa5;
+  outline: none;
+  box-shadow: 0 0 8px rgba(74, 111, 165, 0.4);
 }
 
 .alert-danger {
@@ -43,31 +70,59 @@ h2 {
   border: none;
   color: white;
   border-radius: 10px;
+  padding: 10px 15px;
+  margin-bottom: 20px;
+  text-align: center;
+  font-weight: 600;
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #00ddeb 0%, #007bff 100%);
+  background: linear-gradient(135deg, #4a6fa5 0%, #2c3e50 100%);
   border: none;
-  padding: 12px;
+  padding: 14px;
   font-size: 1.1rem;
   border-radius: 25px;
-  transition: background 0.3s;
+  width: 100%;
+  color: white;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  box-shadow: 0 4px 12px rgba(74, 111, 165, 0.4);
+  margin-top: 10px;
 }
 
 .btn-primary:hover {
-  background: linear-gradient(135deg, #00b7c3 0%, #0056b3 100%);
+  background: linear-gradient(135deg, #2c3e50 0%, #4a6fa5 100%);
+  box-shadow: 0 6px 18px rgba(74, 111, 165, 0.6);
 }
 
 p {
   font-size: 0.9rem;
-  opacity: 0.7;
+  opacity: 0.85;
+  text-align: center;
+  margin-top: 20px;
+  color: #4a6fa5;
 }
 
 p a {
-  color: #00ddeb;
+  color: #4a6fa5;
   text-decoration: none;
+  font-weight: 600;
 }
 
 p a:hover {
   text-decoration: underline;
+}
+
+/* Flex для двух колонок */
+.form-row {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.form-group {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }

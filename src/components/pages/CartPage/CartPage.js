@@ -13,11 +13,9 @@ const CartPage = () => {
 
   const fetchCartOrders = async () => {
     try {
-      const token = localStorage.getItem("token"); // Твой токен для авторизации
+      const token = localStorage.getItem("token");
       const response = await axios.get("http://127.0.0.1:8000/api/user/profile/cart", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
       });
       setCartOrders(response.data);
     } catch (error) {
@@ -36,19 +34,27 @@ const CartPage = () => {
   }
 
   return (
-    <div className="cart-container">
-      <h2>Моя корзина</h2>
-      <div className="cart-orders">
-        {cartOrders.map((order) => (
-          <div key={order.id} className="cart-order-card">
-            <h3>{order.title}</h3>
-            <p>{order.description}</p>
-            <p>Цена: {order.price} ₸</p>
-            <Link className="view-order-button" to={`/profile/orders/${order.id}`}>
-              Подробнее
-            </Link>
-          </div>
-        ))}
+    <div className="cart-order-page">
+      <div className="container">
+        <div className="cart-header">
+          <h2 className="section-title">Моя корзина</h2>
+          <p className="cart-subtitle">Вот ваши текущие заказы</p>
+        </div>
+
+        <div className="cart-orders">
+          {cartOrders.map((order) => (
+            <div key={order.id} className="cart-order-card">
+              <h3 className="cart-order-title">{order.title}</h3>
+              <p className="cart-order-description">{order.description}</p>
+              <div className="cart-order-footer">
+                <span className="cart-order-price">Цена: {order.price} ₸</span>
+                <Link className="view-order-button" to={`/profile/orders/${order.id}`}>
+                  Подробнее
+                </Link>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

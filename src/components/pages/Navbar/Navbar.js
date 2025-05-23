@@ -20,7 +20,7 @@ const Navbar = () => {
     }
   };
 
-  return (
+  return ( 
     <nav className="navbar navbar-expand-lg navbar-light bg-light fixed-top">
       <div className="container">
         <Link className="navbar-brand" to="/">
@@ -43,38 +43,38 @@ const Navbar = () => {
             </li>
             {isAuthenticated ? (
               <>
-                <li className="nav-item">
-                  <Link className="nav-link custom-nav-link" to="/profile">
-                    <ProfileIcon className="profile-icon" />
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <button
-                    className="nav-link custom-nav-button"
-                    onClick={() => setIsChatOpen(true)}
-                  >
-                    Чаты
-                  </button>
-                </li>
-                <li className="nav-item">
-                  <button
-                    className="nav-link custom-nav-button logout"
-                    onClick={() => {
-                      logout();
-                      navigate("/");
-                    }}
-                  >
-                    Выйти
-                  </button>
-                </li>
-              </>
-            ) : (
               <li className="nav-item">
-                <Link className="nav-link custom-nav-link" to="/login">
-                  Вход
+                <Link className="nav-link custom-nav-link" to="/profile">
+                  <ProfileIcon className="profile-icon" />
                 </Link>
               </li>
-            )}
+              {/* <li className="nav-item">
+                <button
+                  className="nav-link custom-nav-button"
+                  onClick={() => setIsChatOpen(true)}
+                >
+                  Чаты
+                </button>
+              </li> */}
+              <li className="nav-item">
+                <button
+                  className="nav-link custom-nav-button logout"
+                  onClick={() => {
+                    logout();
+                    navigate("/");
+                  }}
+                >
+                  Выйти
+                </button>
+              </li>
+            </>
+          ) : (
+            <li className="nav-item">
+              <Link className="nav-link custom-nav-link" to="/login">
+                Вход
+              </Link>
+            </li>
+          )}
             {/* Иконка корзины */}
             <li className="nav-item">
               <Link className="nav-link custom-nav-link" to="/cart">

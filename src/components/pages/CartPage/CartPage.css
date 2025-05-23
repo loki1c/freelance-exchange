@@ -1,268 +1,37 @@
-.cart-order-page {
-    background: linear-gradient(135deg, #0a0a23 0%, #1e1e3f 100%);
-    min-height: 100vh;
-    color: white;
-    padding-top: 80px; /* Учитываем фиксированный navbar */
-  }
-  
-  .container {
-    max-width: 800px;
-  }
-  
-  .section-title {
-    font-size: 2.5rem;
-    font-weight: bold;
-    text-align: center;
-    margin-bottom: 40px;
-    color: #00ddeb;
-  }
-  
-  /* Стили для карточки деталей корзины */
-  .cart-order-detail-card {
-    background: #1e1e3f;
-    border-radius: 15px;
-    padding: 30px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-  }
-  
-  .cart-order-detail-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-  }
-  
-  .cart-order-info {
-    margin-bottom: 20px;
-  }
-  
-  .cart-order-description {
-    font-size: 1rem;
-    opacity: 0.9;
-    margin-bottom: 15px;
-    line-height: 1.6;
-  }
-  
-  .cart-order-price,
-  .cart-order-status,
-  .cart-order-date,
-  .cart-order-author,
-  .cart-order-email {
-    font-size: 0.95rem;
-    margin-bottom: 10px;
-  }
-  
-  .cart-order-price strong,
-  .cart-order-status strong,
-  .cart-order-date strong,
-  .cart-order-author strong,
-  .cart-order-email strong {
-    color: #00ddeb;
-  }
-  
-  .cart-order-status .status-открыт {
-    color: #28a745;
-    font-weight: bold;
-  }
-  
-  .cart-order-status .status-в-работе {
-    color: #ffc107;
-    font-weight: bold;
-  }
-  
-  .cart-order-status .status-закрыт {
-    color: #6c757d;
-    font-weight: bold;
-  }
-  
-  /* Стили для корзины (CartOrder.js) */
-  .cart-order-card {
-    background: #1e1e3f;
-    border-radius: 15px;
-    padding: 30px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-  }
-  
-  .cart-order-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-  }
-  
-  .form-label {
-    font-size: 0.9rem;
-    color: #fff;
-  }
-  
-  .form-control {
-    background: #2a2a5a;
-    border: none;
-    color: white;
-    border-radius: 10px;
-    padding: 10px;
-  }
-  
-  .form-control::placeholder {
-    color: #aaa;
-  }
-  
-  .form-control:focus {
-    background: #2a2a5a;
-    color: white;
-    box-shadow: none;
-    border-color: #00ddeb;
-  }
-  
-  textarea.form-control {
-    resize: none;
-  }
-  
-  .alert-info {
-    background: #2a2a5a;
-    color: #00ddeb;
-    border: none;
-    border-radius: 10px;
-    padding: 15px;
-    margin-bottom: 20px;
-  }
-  
-  .alert-success {
-    background: #28a745;
-    border: none;
-    color: white;
-    border-radius: 10px;
-  }
-  
-  .alert-danger {
-    background: #dc3545;
-    border: none;
-    color: white;
-    border-radius: 10px;
-  }
-  
-  /* Стили для карточки товара в корзине */
-  .cart-order-card {
-    background: #1e1e3f;
-    border-radius: 15px;
-    overflow: hidden;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-  }
-  
-  .cart-order-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
-  }
-  
-  .cart-order-image {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-    border-bottom: 2px solid #00ddeb;
-  }
-  
-  .cart-order-info {
-    padding: 20px;
-  }
-  
-  .cart-order-title {
-    font-size: 1.25rem;
-    font-weight: bold;
-    margin-bottom: 10px;
-    color: #00ddeb;
-  }
-  
-  .cart-order-description {
-    font-size: 0.9rem;
-    opacity: 0.8;
-    margin-bottom: 10px;
-    line-height: 1.5;
-  }
-  
-  .cart-order-price,
-  .cart-order-status,
-  .cart-order-date {
-    font-size: 0.9rem;
-    margin-bottom: 8px;
-  }
-  
-  .cart-order-price strong,
-  .cart-order-status strong,
-  .cart-order-date strong {
-    color: #00ddeb;
-  }
-  
-  .btn-primary {
-    background: linear-gradient(135deg, #00ddeb 0%, #007bff 100%);
-    border: none;
-    padding: 12px 20px;
-    font-size: 1.1rem;
-    border-radius: 25px;
-    transition: background 0.3s;
-  }
-  
-  .btn-primary:hover {
-    background: linear-gradient(135deg, #00b7c3 0%, #0056b3 100%);
-  }
-  
-  .btn-warning {
-    background-color: #ffc107;
-    border: none;
-    border-radius: 10px;
-    padding: 8px 15px;
-    transition: background-color 0.3s ease;
-  }
-  
-  .btn-warning:hover {
-    background-color: #e0a800;
-  }
-  
-  .btn-danger {
-    background-color: #dc3545;
-    border: none;
-    border-radius: 10px;
-    padding: 8px 15px;
-    transition: background-color 0.3s ease;
-  }
-  
-  .btn-danger:hover {
-    background-color: #c82333;
-  }
-  
-  /* Стили для загрузки */
-  .loading {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    color: white;
-    font-size: 1.5rem;
-    background: linear-gradient(135deg, #0a0a23 0%, #1e1e3f 100%);
-  }
-  
-  /* Адаптивность */
-  @media (max-width: 768px) {
-    .section-title {
-      font-size: 2rem;
-    }
-  
-    .cart-order-card {
-      padding: 20px;
-    }
-  
-    .cart-order-image {
-      height: 150px;
-    }
-  
-    .cart-order-description,
-    .cart-order-price,
-    .cart-order-status,
-    .cart-order-date,
-    .cart-order-author,
-    .cart-order-email {
-      font-size: 0.9rem;
-    }
-  }
-  .views-counter {
-    align-items: baseline;
-  }
-  
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 20px;
+  box-sizing: border-box;
+  display: block; /* Обычное блочное поведение */
+}
+
+.cart-header {
+  max-width: 100%;
+  margin-bottom: 30px; /* Отступ между заголовком и заказами */
+}
+
+.section-title {
+  font-size: 2.4rem;
+  font-weight: 700;
+  margin-bottom: 6px;
+  color: #1a3a6d;
+  border-bottom: 2px solid #7a9ce8;
+  padding-bottom: 6px;
+}
+
+.cart-subtitle {
+  font-size: 1.1rem;
+  font-style: italic;
+  color: #5a6f9a;
+  opacity: 0.75;
+  margin-top: 0;
+}
+
+/* Заказы идут под заголовком */
+.cart-orders {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+}

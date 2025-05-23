@@ -1,268 +1,160 @@
-.create-order-page {
-  background: linear-gradient(135deg, #0a0a23 0%, #1e1e3f 100%);
+/* --- Общий светлый фон сайта --- */
+body {
+  margin: 0;
+  padding-top: 65px; /* под navbar */
+  background-color: #f5f8ff; /* светлый фон */
+  color: #2c3e50; /* темный текст */
+  font-family: 'Arial', sans-serif;
   min-height: 100vh;
-  color: white;
-  padding-top: 80px; /* Учитываем фиксированный navbar */
 }
 
-.container {
+/* Ссылки */
+a {
+  color: #4a6fa5;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: #2c3e50;
+  text-decoration: underline;
+}
+
+/* --- Контейнер без темного фона --- */
+.create-order-page .container {
   max-width: 800px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  box-sizing: border-box;
+  background-color: transparent; /* прозрачный, без тёмного фона */
+  border-radius: 0;
+  box-shadow: none;
+  color: #2c3e50;
 }
 
+/* Заголовок */
 .section-title {
   font-size: 2.5rem;
-  font-weight: bold;
+  font-weight: 700;
   text-align: center;
   margin-bottom: 40px;
-  color: #00ddeb;
+  color: #223344;
 }
 
-/* Стили для карточки деталей заказа (Order.js) */
-.order-detail-card {
-  background: #1e1e3f;
-  border-radius: 15px;
-  padding: 30px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.order-detail-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-}
-
-.order-info {
-  margin-bottom: 20px;
-}
-
-.order-description {
-  font-size: 1rem;
-  opacity: 0.9;
-  margin-bottom: 15px;
-  line-height: 1.6;
-}
-
-.order-price,
-.order-status,
-.order-date,
-.order-author,
-.order-email {
-  font-size: 0.95rem;
-  margin-bottom: 10px;
-}
-
-.order-price strong,
-.order-status strong,
-.order-date strong,
-.order-author strong,
-.order-email strong {
-  color: #00ddeb;
-}
-
-.order-status .status-открыт {
-  color: #28a745;
-  font-weight: bold;
-}
-
-.order-status .status-в-работе {
-  color: #ffc107;
-  font-weight: bold;
-}
-
-.order-status .status-закрыт {
-  color: #6c757d;
-  font-weight: bold;
-}
-
-/* Стили для формы и карточек заказов (Orders.js) */
-.create-order-card {
-  background: #1e1e3f;
-  border-radius: 15px;
-  padding: 30px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.create-order-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-}
-
+/* Метки для инпутов */
+label,
 .form-label {
-  font-size: 0.9rem;
-  color: #fff;
+  color: #223344;
+  font-weight: 600;
+  display: block;
+  margin-bottom: 6px;
 }
 
+/* Инпуты, textarea, select — светлый фон и тёмный текст */
+input[type="text"],
+input[type="number"],
+input[type="date"],
+select,
+textarea,
 .form-control {
-  background: #2a2a5a;
-  border: none;
-  color: white;
-  border-radius: 10px;
-  padding: 10px;
+  background-color: #ffffff;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 10px 15px;
+  color: #2c3e50;
+  font-size: 1rem;
+  width: 100%;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease;
+  font-family: inherit;
 }
 
-.form-control::placeholder {
-  color: #aaa;
+input[type="text"]::placeholder,
+textarea::placeholder,
+select::placeholder {
+  color: #888;
 }
 
+input[type="text"]:focus,
+input[type="number"]:focus,
+input[type="date"]:focus,
+select:focus,
+textarea:focus,
 .form-control:focus {
-  background: #2a2a5a;
-  color: white;
-  box-shadow: none;
-  border-color: #00ddeb;
+  outline: none;
+  border-color: #4a6fa5;
+  background-color: #fff;
+  color: #2c3e50;
 }
 
+/* Текстовые области — не масштабируемые */
 textarea.form-control {
   resize: none;
 }
 
-.alert-info {
-  background: #2a2a5a;
-  color: #00ddeb;
+/* Кнопка отправки */
+.btn-primary {
+  background: linear-gradient(135deg, #4a6fa5 0%, #2c3e50 100%);
+  color: white;
+  border-radius: 25px;
+  padding: 12px 20px;
+  font-size: 1.1rem;
   border: none;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  user-select: none;
+  display: inline-block;
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+  background: linear-gradient(135deg, #2c3e50 0%, #4a6fa5 100%);
+  outline: none;
+}
+
+/* Сообщения */
+.alert {
   border-radius: 10px;
   padding: 15px;
   margin-bottom: 20px;
+  font-weight: 600;
 }
 
-.alert-success {
-  background: #28a745;
-  border: none;
-  color: white;
-  border-radius: 10px;
+.alert-info {
+  background-color: #d9e7ff;
+  color: #4a6fa5;
+  border: 1px solid #4a6fa5;
 }
 
 .alert-danger {
-  background: #dc3545;
-  border: none;
-  color: white;
-  border-radius: 10px;
+  background-color: #f8d7da;
+  color: #842029;
+  border: 1px solid #842029;
 }
 
-/* Карточки заказов (Orders.js) */
-.order-card {
-  background: #1e1e3f;
-  border-radius: 15px;
-  overflow: hidden;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.order-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
-}
-
-.order-image {
-  width: 100%;
-  height: 200px;
-  object-fit: cover;
-  border-bottom: 2px solid #00ddeb;
-}
-
-.order-info {
-  padding: 20px;
-}
-
-.order-title {
-  font-size: 1.25rem;
-  font-weight: bold;
-  margin-bottom: 10px;
-  color: #00ddeb;
-}
-
-.order-description {
-  font-size: 0.9rem;
-  opacity: 0.8;
-  margin-bottom: 10px;
-  line-height: 1.5;
-}
-
-.order-price,
-.order-status,
-.order-date {
-  font-size: 0.9rem;
-  margin-bottom: 8px;
-}
-
-.order-price strong,
-.order-status strong,
-.order-date strong {
-  color: #00ddeb;
-}
-
-.btn-primary {
-  background: linear-gradient(135deg, #00ddeb 0%, #007bff 100%);
-  border: none;
-  padding: 12px 20px;
-  font-size: 1.1rem;
-  border-radius: 25px;
-  transition: background 0.3s;
-}
-
-.btn-primary:hover {
-  background: linear-gradient(135deg, #00b7c3 0%, #0056b3 100%);
-}
-
-.btn-warning {
-  background-color: #ffc107;
-  border: none;
-  border-radius: 10px;
-  padding: 8px 15px;
-  transition: background-color 0.3s ease;
-}
-
-.btn-warning:hover {
-  background-color: #e0a800;
-}
-
-.btn-danger {
-  background-color: #dc3545;
-  border: none;
-  border-radius: 10px;
-  padding: 8px 15px;
-  transition: background-color 0.3s ease;
-}
-
-.btn-danger:hover {
-  background-color: #c82333;
-}
-
-/* Стили для загрузки */
-.loading {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  color: white;
-  font-size: 1.5rem;
-  background: linear-gradient(135deg, #0a0a23 0%, #1e1e3f 100%);
-}
-
-/* Адаптивность */
+/* Адаптив */
 @media (max-width: 768px) {
   .section-title {
     font-size: 2rem;
   }
 
-  .create-order-card,
-  .order-detail-card {
-    padding: 20px;
+  input[type="text"],
+  input[type="number"],
+  input[type="date"],
+  select,
+  textarea,
+  .form-control {
+    font-size: 0.95rem;
+    padding: 8px 12px;
   }
 
-  .order-image {
-    height: 150px;
+  .btn-primary {
+    font-size: 1rem;
+    padding: 10px 18px;
   }
 
-  .order-description,
-  .order-price,
-  .order-status,
-  .order-date,
-  .order-author,
-  .order-email {
-    font-size: 0.9rem;
+  .container {
+    max-width: 95%;
+    padding: 30px 15px;
   }
-}
-.views-counter{
-  align-items: baseline;
 }

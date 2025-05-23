@@ -1,142 +1,262 @@
+/* === Общий фон и контейнер === */
 .profile-page {
-  background-color: #0a0a23;
-  color: white;
+  background-color: #f5f8ff;
   min-height: 100vh;
-  padding-top: 80px;
+  color: #2c3e50;
+  padding: 40px 20px 60px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  box-sizing: border-box;
 }
 
 .container {
   max-width: 1200px;
+  margin: 0 auto;
+  box-sizing: border-box;
 }
 
+/* === Заголовки секций === */
 .section-title {
   font-size: 2.5rem;
-  font-weight: bold;
+  font-weight: 700;
   text-align: center;
-  margin-bottom: 40px;
-  color: #fff;
+  color: #4a6fa5;
+  border-bottom: 2px solid #4a6fa5;
+  padding-bottom: 8px;
+  margin-bottom: 30px;
 }
 
-.profile-form-card {
-  background: #1e1e3f;
-  border-radius: 15px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-.form-title {
-  font-size: 1.5rem;
-  font-weight: bold;
-  margin-bottom: 20px;
-  color: #00ddeb;
-}
-
-.form-label {
-  color: #fff;
-  font-weight: 500;
-}
-
-.custom-input {
-  background-color: #2a2a4a;
-  border: none;
-  color: white;
-  border-radius: 10px;
-  padding: 10px;
-}
-
-.custom-input:focus {
-  background-color: #2a2a4a;
-  color: white;
-  box-shadow: 0 0 5px rgba(0, 221, 235, 0.5);
-  border: none;
-}
-
+/* === Единый стиль кнопок === */
 .custom-btn {
-  border-radius: 10px;
-  padding: 8px 16px;
-  transition: background-color 0.3s;
+  border-radius: 25px;
+  padding: 10px 22px;
+  font-weight: 700;
+  box-shadow: 0 3px 10px rgba(74, 111, 165, 0.4);
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+.custom-btn:hover,
+.custom-btn:focus {
+  box-shadow: 0 5px 16px rgba(74, 111, 165, 0.7);
+  outline: none;
 }
 
-.btn-primary.custom-btn {
-  background-color: #00ddeb;
-  border: none;
+/* Разные фоны для кнопок */
+.btn-success.custom-btn {
+  background: #28a745;
+  color: #fff;
 }
-
-.btn-primary.custom-btn:hover {
-  background-color: #00b7c3;
-}
-
-.btn-secondary.custom-btn {
-  background-color: #6c757d;
-}
-
-.btn-secondary.custom-btn:hover {
-  background-color: #5a6268;
-}
-
 .btn-warning.custom-btn {
-  background-color: #ffc107;
-  color: #0a0a23;
+  background: #ffc107;
+  color: #2c3e50;
 }
 
-.btn-warning.custom-btn:hover {
-  background-color: #e0a800;
+/* === Обёртка контента профиля === */
+.profile-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
 }
 
-.btn-danger.custom-btn {
-  background-color: #dc3545;
+/* === Карточка профиля и форма редактирования === */
+.profile-info-card,
+.profile-form-card {
+  background: #ffffff;
+  border-radius: 15px;
+  box-shadow: 0 2px 8px rgba(74, 111, 165, 0.15);
+  padding: 30px;
+  width: 100%;
+  max-width: 600px;
+  box-sizing: border-box;
 }
 
-.btn-danger.custom-btn:hover {
-  background-color: #c82333;
+/* Поля формы */
+.profile-form-card .form-label {
+  display: block;
+  font-weight: 600;
+  color: #4a6fa5;
+  margin-bottom: 6px;
+}
+.profile-form-card .custom-input {
+  width: 100%;
+  background: #ffffff;
+  border: 1.5px solid #a7c7e7;
+  border-radius: 10px;
+  padding: 12px 14px;
+  font-size: 1rem;
+  color: #2c3e50;
+  box-shadow: 0 1px 4px rgba(74, 111, 165, 0.15);
+  margin-bottom: 20px;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+.profile-form-card .custom-input:focus {
+  border-color: #4a6fa5;
+  box-shadow: 0 0 8px rgba(74, 111, 165, 0.4);
 }
 
+/* Стили вывода информации профиля */
+.profile-info-card p {
+  font-size: 1rem;
+  color: #6a7b9a;
+  margin: 12px 0;
+}
+.profile-info-card p strong {
+  color: #4a6fa5;
+  font-weight: 600;
+  margin-right: 5px;
+}
+.profile-info-card img.img-thumbnail {
+  margin-top: 15px;
+  border-radius: 50%;
+  box-shadow: 0 2px 8px rgba(74, 111, 165, 0.15);
+}
+
+/* === Блок действий в профиле рядом с кнопками === */
+.profile-actions {
+  display: flex;
+  gap: 15px;
+  margin-top: 20px;
+}
+.profile-actions .custom-btn {
+  flex: 1;
+  text-align: center;
+}
+
+/* === Секция «Мои заказы» === */
+.orders-section {
+  width: 100%;
+}
+.orders-section .section-title {
+  margin-top: 40px;
+}
+
+/* Превращаем .row.g-4 в grid */
+.orders-section .row.g-4 {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 24px;
+  justify-items: stretch;
+  align-items: start;
+  padding: 0;
+}
+/* Сбрасываем bootstrap-col */
+.orders-section .row.g-4 > .col-md-4 {
+  width: 100% !important;
+  max-width: none !important;
+}
+/* Убедимся, что карточка занимает всю ячейку */
+.orders-section .row.g-4 > .col-md-4 > .order-card {
+  width: 100%;
+}
+
+/* Карточка заказа */
+.orders-section .order-card {
+  background: #ffffff;
+  border-radius: 15px;
+  box-shadow: 0 2px 8px rgba(74, 111, 165, 0.15);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.orders-section .order-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 10px 20px rgba(74, 111, 165, 0.3);
+}
+
+/* Изображение */
+.orders-section .order-image {
+  width: 100%;
+  height: 180px;
+  object-fit: contain;
+  border-bottom: 2px solid #4a6fa5;
+  background: #f9faff;
+  padding: 10px;
+  border-radius: 15px 15px 0 0;
+}
+
+/* Контент карточки */
+.orders-section .order-info {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex-grow: 1;
+}
+.orders-section .order-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #4a6fa5;
+  margin: 0;
+}
+.orders-section .order-description {
+  font-size: 0.95rem;
+  color: #6a7b9a;
+  line-height: 1.4;
+  margin: 0;
+  flex-grow: 1;
+}
+.orders-section .order-price {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #4a6fa5;
+  margin: 0;
+}
+
+/* Действия */
+.orders-section .order-actions {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  padding-top: 10px;
+}
+.orders-section .order-actions .btn-edit,
+.orders-section .order-actions .btn-delete {
+  min-width: 100px;
+  padding: 10px 22px;
+  font-size: 1rem;
+  border-radius: 25px;
+  font-weight: 700;
+  color: #fff;
+  border: none;
+  box-shadow: 0 5px 15px rgba(74, 111, 165, 0.35);
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+.orders-section .order-actions .btn-edit {
+  background: linear-gradient(135deg, #4a6fa5 0%, #2c3e50 100%);
+}
+.orders-section .order-actions .btn-edit:hover {
+  background: linear-gradient(135deg, #2c3e50 0%, #4a6fa5 100%);
+  box-shadow: 0 8px 22px rgba(44, 62, 80, 0.75);
+}
+.orders-section .order-actions .btn-delete {
+  background: linear-gradient(135deg, #dc3545 0%, #a52834 100%);
+}
+.orders-section .order-actions .btn-delete:hover {
+  background: linear-gradient(135deg, #a52834 0%, #dc3545 100%);
+  box-shadow: 0 8px 22px rgba(172, 50, 68, 0.75);
+}
+
+/* Сообщение о пустом списке */
 .no-orders {
   text-align: center;
-  font-size: 1.2rem;
-  opacity: 0.7;
+  font-size: 1rem;
+  color: #6a7b9a;
 }
 
-.order-card {
-  background: #1e1e3f;
-  border-radius: 15px;
-  overflow: hidden;
-  transition: transform 0.3s;
+/* === Адаптив === */
+@media (max-width: 991px) {
+  .orders-section .row.g-4 {
+    gap: 18px;
+  }
 }
 
-.order-card:hover {
-  transform: translateY(-5px);
-}
-
-.order-image {
-  width: 100%;
-  height: 200px;
-  object-fit: cover;
-}
-
-.order-info {
-  padding: 20px;
-}
-
-.order-title {
-  font-size: 1.25rem;
-  font-weight: bold;
-  margin-bottom: 10px;
-}
-
-.order-description {
-  font-size: 0.9rem;
-  opacity: 0.7;
-  margin-bottom: 10px;
-}
-
-.order-price {
-  font-size: 1.1rem;
-  font-weight: bold;
-  color: #00ddeb;
-  margin-bottom: 15px;
-}
-
-.order-actions {
-  display: flex;
-  gap: 10px;
+@media (max-width: 767px) {
+  .orders-section .row.g-4 {
+    grid-template-columns: 1fr !important;
+  }
+  .profile-actions {
+    flex-direction: column;
+  }
 }

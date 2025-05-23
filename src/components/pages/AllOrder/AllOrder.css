@@ -1,100 +1,207 @@
+/* Общий светлый фон для страницы */
 .find-order-page {
-  background: linear-gradient(135deg, #0a0a23 0%, #1e1e3f 100%);
+  background-color: #f5f8ff;
   min-height: 100vh;
-  color: white;
+  color: #2c3e50;
+  padding: 40px 20px 60px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  box-sizing: border-box;
 }
 
+/* Контейнер с ограничением ширины и отступами */
 .container {
   max-width: 1200px;
+  margin: 0 auto;
+  box-sizing: border-box;
 }
 
+/* Заголовок */
 .section-title {
   font-size: 2.5rem;
-  font-weight: bold;
+  font-weight: 700;
   text-align: center;
-  margin-bottom: 40px;
-  color: #00ddeb;
+  margin-bottom: 30px;
+  color: #4a6fa5;
+  border-bottom: 2px solid #4a6fa5;
+  padding-bottom: 8px;
 }
 
+/* Блок фильтрации */
+.category-filter {
+  margin-bottom: 25px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.category-filter label {
+  font-weight: 600;
+  color: #4a6fa5;
+  white-space: nowrap;
+}
+
+.category-filter select.form-select {
+  max-width: 250px;
+  background-color: #ffffff;
+  color: #2c3e50;
+  border: 1.5px solid #4a6fa5;
+  border-radius: 10px;
+  padding: 8px 14px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+}
+
+.category-filter select.form-select:hover,
+.category-filter select.form-select:focus {
+  border-color: #2c3e50;
+  outline: none;
+}
+
+/* === Сетка заказов (grid вместо bootstrap flex) === */
+.row.g-4 {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 24px;
+  justify-items: stretch;
+  align-items: start;
+  padding: 0;
+}
+
+/* Сбрасываем ограничения .col-md-4 внутри grid */
+.row.g-4 > .col-md-4 {
+  width: 100% !important;
+  max-width: none !important;
+}
+
+/* Убеждаемся, что карточка занимает всю ячейку */
+.row.g-4 > .col-md-4 > .order-card {
+  width: 100%;
+  /* При желании можно задать равную высоту:
+     min-height: 360px;
+  */
+}
+
+/* Карточка заказа */
 .order-card {
-  background: #1e1e3f;
+  background: #ffffff;
   border-radius: 15px;
-  overflow: hidden;
-  transition: transform 0.3s;
+  box-shadow: 0 2px 8px rgb(74 111 165 / 0.15);
+  display: flex;
+  flex-direction: column;
+  overflow: visible;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  /* убираем max-width/md-4 фикс, т.к. управляем через grid */
+  max-width: none;
 }
 
 .order-card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-6px);
+  box-shadow: 0 10px 20px rgba(74, 111, 165, 0.3);
 }
 
+/* Изображение */
 .order-image {
   width: 100%;
-  height: 200px;
-  object-fit: cover;
+  height: 180px;
+  object-fit: contain;
+  border-bottom: 2px solid #4a6fa5;
+  background: #f9faff;
+  padding: 10px;
+  border-radius: 15px 15px 0 0;
 }
 
+/* Информация о заказе */
 .order-info {
   padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex-grow: 1;
 }
 
+/* Заголовок */
 .order-title {
-  font-size: 1.25rem;
-  font-weight: bold;
-  margin-bottom: 10px;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #4a6fa5;
+  margin: 0;
 }
 
+/* Описание */
 .order-description {
-  font-size: 0.9rem;
-  opacity: 0.7;
-  margin-bottom: 10px;
+  font-size: 0.95rem;
+  color: #6a7b9a;
+  line-height: 1.4;
+  flex-grow: 1;
+  margin: 0;
 }
 
+/* Цена */
 .order-price {
   font-size: 1.1rem;
-  font-weight: bold;
-  color: #00ddeb;
+  font-weight: 700;
+  color: #4a6fa5;
+  margin: 0;
 }
 
-.order-details-card {
-  background: #1e1e3f;
-  border-radius: 15px;
-  padding: 30px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+/* Дополнительные данные */
+.order-category,
+.order-deadline,
+.order-view-count {
+  font-size: 0.9rem;
+  color: #8293b1;
+  margin: 0;
 }
 
-.card-title {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: #00ddeb;
-  margin-bottom: 20px;
-}
-
-.alert-warning {
-  background: #dc3545;
-  border: none;
-  color: white;
-  border-radius: 10px;
-  padding: 15px;
-}
-
-.alert-warning a {
-  color: #00ddeb;
-  text-decoration: none;
-}
-
-.alert-warning a:hover {
-  text-decoration: underline;
-}
-
+/* Кнопка Подробнее */
 .btn-primary {
-  background: linear-gradient(135deg, #00ddeb 0%, #007bff 100%);
+  background: linear-gradient(135deg, #4a6fa5 0%, #2c3e50 100%);
   border: none;
-  padding: 12px 20px;
-  font-size: 1.1rem;
+  padding: 10px 20px;
+  font-size: 1rem;
   border-radius: 25px;
-  transition: background 0.3s;
+  color: white;
+  cursor: pointer;
+  min-width: 120px;
+  text-align: center;
+  box-shadow: 0 3px 10px rgba(74, 111, 165, 0.4);
+  transition: background 0.3s ease;
+  align-self: flex-start;
+  user-select: none;
+  text-decoration: none;
+  display: inline-block;
 }
 
-.btn-primary:hover {
-  background: linear-gradient(135deg, #00b7c3 0%, #0056b3 100%);
+.btn-primary:hover,
+.btn-primary:focus {
+  background: linear-gradient(135deg, #2c3e50 0%, #1a283b 100%);
+  box-shadow: 0 5px 16px rgba(44, 62, 80, 0.7);
+  outline: none;
+}
+
+/* Адаптивность */
+@media (max-width: 991px) {
+  .row.g-4 {
+    gap: 18px;
+  }
+}
+
+@media (max-width: 767px) {
+  .row.g-4 {
+    grid-template-columns: 1fr !important;
+  }
+
+  .category-filter {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .category-filter select.form-select {
+    max-width: 100%;
+    width: 100%;
+    margin-top: 10px;
+  }
 }
