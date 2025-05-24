@@ -211,7 +211,8 @@
   padding-top: 10px;
 }
 .orders-section .order-actions .btn-edit,
-.orders-section .order-actions .btn-delete {
+.orders-section .order-actions .btn-delete, 
+.orders-section .order-actions .btn-close{
   min-width: 100px;
   padding: 10px 22px;
   font-size: 1rem;

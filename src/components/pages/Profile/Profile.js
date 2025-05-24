@@ -76,6 +76,26 @@ const Profile = () => {
       setMessage("Ошибка при удалении заказа.");
     }
   };
+  const handleCloseOrder = async (orderId) => {
+  setMessage("");
+  try {
+    await axios.put(
+      `http://127.0.0.1:8000/api/user/profile/orders/${orderId}/close`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    );
+    setMessage("Заказ успешно закрыт.");
+    fetchOrders(); // обновляем список заказов
+  } catch (error) {
+    console.error("Ошибка при закрытии заказа:", error);
+    setMessage("Не удалось закрыть заказ.");
+  }
+};
+
 
   const handleChange = (e) => {
     setUserData({ ...userData, [e.target.name]: e.target.value });
@@ -289,6 +309,12 @@ const Profile = () => {
                             onClick={() => handleDeleteOrder(order)}
                           >
                             Удалить
+                          </button>
+                           <button
+                            className="btn-close"
+                            onClick={() => handleCloseOrder(order.id)}
+                          >
+                            Закрыть
                           </button>
                         </div>
                       </div>

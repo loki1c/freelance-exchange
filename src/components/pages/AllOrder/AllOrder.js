@@ -14,44 +14,48 @@ const AllOrder = () => {
 
   useEffect(() => {
     const fetchOrders = async () => {
-      try {
-        const response = await axios.get('http://127.0.0.1:8000/api/user/orders', {
-          headers: {
-            'Authorization': `Bearer ${localStorage.getItem('token')}`,
-          },
-        });
-        
-        setOrders(response.data);
-        setFilteredOrders(response.data);
-        setLoading(false);
+  try {
+    const response = await axios.get('http://127.0.0.1:8000/api/user/orders', {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('token')}`,
+      },
+    });
 
-        // Сет категории из всех заказов
-        const uniqueCategories = [
-          ...new Set(response.data.map((order) => order.category).filter((category) => category))
-        ];
-        setCategories(uniqueCategories);
+    // 🔴 Фильтруем только открытые заказы
+    const openOrders = response.data.filter(order => order.status !== 'Закрыт');
 
-        // Запрос на получение количества просмотров для каждого заказа
-        const viewCountPromises = response.data.map(async (order) => {
-          const viewCountResponse = await axios.get(`http://127.0.0.1:8000/api/user/profile/orders/${order.id}/view-count`, {
-            headers: {
-              'Authorization': `Bearer ${localStorage.getItem('token')}`,
-            },
-          });
-          return { orderId: order.id, viewCount: viewCountResponse.data.view_count };
-        });
+    setOrders(openOrders);
+    setFilteredOrders(openOrders);
+    setLoading(false);
 
-        const viewCountsData = await Promise.all(viewCountPromises);
-        const viewCountsObj = viewCountsData.reduce((acc, { orderId, viewCount }) => {
-          acc[orderId] = viewCount;
-          return acc;
-        }, {});
-        setViewCounts(viewCountsObj);
-      } catch (error) {
-        console.error("There was an error fetching the orders!", error);
-        setLoading(false);
-      }
-    };
+    // Извлекаем уникальные категории
+    const uniqueCategories = [
+      ...new Set(openOrders.map((order) => order.category).filter((category) => category))
+    ];
+    setCategories(uniqueCategories);
+
+    // Получаем просмотры только для открытых заказов
+    const viewCountPromises = openOrders.map(async (order) => {
+      const viewCountResponse = await axios.get(`http://127.0.0.1:8000/api/user/profile/orders/${order.id}/view-count`, {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
+      return { orderId: order.id, viewCount: viewCountResponse.data.view_count };
+    });
+
+    const viewCountsData = await Promise.all(viewCountPromises);
+    const viewCountsObj = viewCountsData.reduce((acc, { orderId, viewCount }) => {
+      acc[orderId] = viewCount;
+      return acc;
+    }, {});
+    setViewCounts(viewCountsObj);
+  } catch (error) {
+    console.error("There was an error fetching the orders!", error);
+    setLoading(false);
+  }
+};
+
 
     fetchOrders();
   }, []);
@@ -106,6 +110,9 @@ const AllOrder = () => {
                   />
                   <div className="order-info">
                     <h5 className="order-title">{order.title}</h5>
+                    {order.status === 'В разработке' && (
+                      <p className="order-status in-progress">В разработке</p>
+                    )}
                     <p className="order-description">{order.description}</p>
                     <p className="order-price">{order.price}</p>
 
