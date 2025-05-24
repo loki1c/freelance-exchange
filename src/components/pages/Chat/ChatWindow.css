@@ -21,7 +21,9 @@
   from { transform: translateY(20px); opacity: 0; }
   to   { transform: translateY(0);      opacity: 1; }
 }
-
+.message p{
+  color: #fff;
+}
 /* Header */
 .chat-header {
   background: linear-gradient(135deg, #4a6fa5 0%, #2c3e50 100%);
